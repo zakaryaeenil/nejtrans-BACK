@@ -22,6 +22,7 @@ public class Dossier implements Serializable {
     private Integer nb_documents;
     private boolean available;
     private String reservation_username;
+    private String etat;
     @OneToMany(mappedBy = "doc_dossier")
     private Collection<Document> documents=new ArrayList<>();
     @ManyToOne
