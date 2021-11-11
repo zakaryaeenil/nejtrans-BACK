@@ -49,14 +49,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // http.authorizeRequests().anyRequest().permitAll();
+         http.authorizeRequests().anyRequest().permitAll();
         http.cors().and().csrf().disable();
         JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/auth/login");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-           http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
-           http.authorizeRequests().antMatchers().permitAll();
-              http.authorizeRequests().anyRequest().authenticated();
+         //  http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
+        //http.authorizeRequests().antMatchers().permitAll();
+        // http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(jwtAuthenticationFilter);
         http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
