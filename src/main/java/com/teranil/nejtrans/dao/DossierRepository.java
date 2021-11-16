@@ -10,4 +10,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface DossierRepository extends JpaRepository<Dossier,Long> {
 List<Dossier> findByTypeDossier(String TypeDossier);
+List<Dossier> findByAvailable(boolean available);
 }

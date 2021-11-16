@@ -85,8 +85,8 @@ public class inittest implements CommandLineRunner {
         d.setReservation_username("user2");
         d.setUser(userRepository.findByUsername("user3"));
 
-        d2.setAvailable(true);
-        d2.setTypeDossier("Import");
+        d2.setAvailable(false);
+        d2.setTypeDossier("Export");
         d2.setReservation_username("admin1");
         d2.setUser(userRepository.findByUsername("user3"));
 
@@ -103,7 +103,7 @@ public class inittest implements CommandLineRunner {
         doc.setDoc_dossier(dossierRepository.getById(1L));
 
 
-        doc2.setName("Doc1");
+        doc2.setName("Doc2");
         doc2.setType_Document("LETTRE");
         doc2.setDoc_dossier(dossierRepository.getById(2L));
 
