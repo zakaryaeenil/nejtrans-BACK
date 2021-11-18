@@ -81,6 +81,7 @@ public class inittest implements CommandLineRunner {
         Dossier d=new Dossier();
         Dossier d2=new Dossier();
         d.setAvailable(true);
+        d.setCompleted(true);
         d.setTypeDossier("Import");
         d.setReservation_username("user2");
         d.setUser(userRepository.findByUsername("user3"));
@@ -88,7 +89,7 @@ public class inittest implements CommandLineRunner {
         d2.setAvailable(false);
         d2.setTypeDossier("Export");
         d2.setReservation_username("admin1");
-        d2.setUser(userRepository.findByUsername("user3"));
+        d2.setUser(userRepository.findByUsername("user2"));
 
         dossierRepository.save(d);
         dossierRepository.save(d2);

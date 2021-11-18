@@ -21,6 +21,7 @@ public class Dossier implements Serializable {
     private String typeDossier;
     private Integer nb_documents;
     private boolean available;
+    private boolean completed=false;
     private String reservation_username;
     private String etat;
     @OneToMany(mappedBy = "doc_dossier")
