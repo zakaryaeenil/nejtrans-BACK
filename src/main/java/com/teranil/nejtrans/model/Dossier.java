@@ -3,11 +3,13 @@ package com.teranil.nejtrans.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 
 @Entity
@@ -23,6 +25,8 @@ public class Dossier implements Serializable {
     private Integer available=1;
     private String reservation_username;
     private String etat;
+    @CreationTimestamp
+    private Date createdAt;
     @OneToMany(mappedBy = "doc_dossier",cascade = CascadeType.ALL,orphanRemoval = true)
     private Collection<Document> documents=new ArrayList<>();
     @ManyToOne
