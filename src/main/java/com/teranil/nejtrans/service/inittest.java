@@ -80,13 +80,12 @@ public class inittest implements CommandLineRunner {
     public void initDossier(){
         Dossier d=new Dossier();
         Dossier d2=new Dossier();
-        d.setAvailable(true);
-        d.setCompleted(true);
+        d.setAvailable(1);
         d.setTypeDossier("Import");
         d.setReservation_username("user2");
         d.setUser(userRepository.findByUsername("user3"));
 
-        d2.setAvailable(false);
+        d2.setAvailable(2);
         d2.setTypeDossier("Export");
         d2.setReservation_username("admin1");
         d2.setUser(userRepository.findByUsername("user2"));

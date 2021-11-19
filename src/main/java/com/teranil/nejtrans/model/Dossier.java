@@ -20,11 +20,10 @@ public class Dossier implements Serializable {
     private Long id;
     private String typeDossier;
     private Integer nb_documents;
-    private boolean available;
-    private boolean completed=false;
+    private Integer available=1;
     private String reservation_username;
     private String etat;
-    @OneToMany(mappedBy = "doc_dossier")
+    @OneToMany(mappedBy = "doc_dossier",cascade = CascadeType.ALL,orphanRemoval = true)
     private Collection<Document> documents=new ArrayList<>();
     @ManyToOne
      private User user;
