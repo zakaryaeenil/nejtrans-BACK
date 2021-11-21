@@ -52,23 +52,22 @@ public class inittest implements CommandLineRunner {
         u.setPassword(bCryptPasswordEncoder.encode("password"));
         u.setLastName("Depp");
         u.getRoles().add(roleRepository.findByName("ADMIN"));
-        u.getRoles().add(roleRepository.findByName("USER"));
+
 
 
         u2.setEmail("employeeEmail@gmail.com");
         u2.setUsername("user2");
         u2.setFirstName("zaki");
-        u.setPassword(bCryptPasswordEncoder.encode("password"));
+        u.setPassword(bCryptPasswordEncoder.encode("password22"));
         u2.setLastName("hehe");
-        u2.getRoles().add(roleRepository.findByName("USER"));
         u2.getRoles().add(roleRepository.findByName("EMPLOYEE"));
 
 
         u3.setEmail("User2Email@gmail.com");
         u3.setUsername("user3");
         u3.setFirstName("mehdi");
-        u.setPassword(bCryptPasswordEncoder.encode("password"));
-        u3.setLastName("ghnim");
+        u.setPassword(bCryptPasswordEncoder.encode("testpaww"));
+        u3.setLastName("aghnim");
         u3.getRoles().add(roleRepository.findByName("USER"));
 
         userRepository.save(u);
@@ -80,35 +79,59 @@ public class inittest implements CommandLineRunner {
     public void initDossier(){
         Dossier d=new Dossier();
         Dossier d2=new Dossier();
+        Dossier d3=new Dossier();
+
         d.setAvailable(1);
         d.setTypeDossier("Import");
         d.setReservation_username("user2");
         d.setUser(userRepository.findByUsername("user3"));
+
+
+
 
         d2.setAvailable(2);
         d2.setTypeDossier("Export");
         d2.setReservation_username("admin1");
         d2.setUser(userRepository.findByUsername("user2"));
 
+
+
+        d3.setAvailable(3);
+        d3.setTypeDossier("Export");
+        d3.setReservation_username("admin1");
+        d3.setUser(userRepository.findByUsername("user2"));
+
+
         dossierRepository.save(d);
         dossierRepository.save(d2);
+        dossierRepository.save(d3);
 
     }
 
     public void initDocument(){
     Document doc=new Document();
     Document doc2=new Document();
+    Document doc3=new Document();
+
         doc.setName("Doc1");
         doc.setType_Document("CV");
         doc.setDoc_dossier(dossierRepository.getById(1L));
-
+        doc.getDoc_dossier().setNb_documents(doc.getDoc_dossier().getNb_documents()+1);
 
         doc2.setName("Doc2");
-        doc2.setType_Document("LETTRE");
+        doc2.setType_Document("Lettre motivation");
         doc2.setDoc_dossier(dossierRepository.getById(2L));
+        doc2.getDoc_dossier().setNb_documents(doc2.getDoc_dossier().getNb_documents()+1);
+
+        doc3.setName("Doc3");
+        doc3.setType_Document("Acte naissance");
+        doc3.setDoc_dossier(dossierRepository.getById(1L));
+        doc3.getDoc_dossier().setNb_documents(doc3.getDoc_dossier().getNb_documents()+1);
+
 
         documentRepository.save(doc);
         documentRepository.save(doc2);
+        documentRepository.save(doc3);
     }
 
     @Override
