@@ -84,7 +84,7 @@ public class inittest implements CommandLineRunner {
         d.setAvailable(1);
         d.setTypeDossier("Import");
         d.setEmployeeUsername("employee1");
-        d.setUser(userRepository.findByUsername("user3"));
+        d.setUser(userRepository.getById(3L));
 
 
 
@@ -92,14 +92,14 @@ public class inittest implements CommandLineRunner {
         d2.setAvailable(2);
         d2.setTypeDossier("Export");
         d2.setEmployeeUsername("employee1");
-        d2.setUser(userRepository.findByUsername("user2"));
+        d2.setUser(userRepository.getById(2L));
 
 
 
         d3.setAvailable(3);
         d3.setTypeDossier("Export");
         d3.setEmployeeUsername("admin1");
-        d3.setUser(userRepository.findByUsername("user2"));
+        d3.setUser(userRepository.getById(1L));
 
 
         dossierRepository.save(d);
