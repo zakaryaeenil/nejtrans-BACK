@@ -42,23 +42,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/api/auth/login/**",
-            "/api/auth/register"
+            "/api/auth/login/",
+            "/api/auth/register",
+            "api/dossier/**",
+            "api/users/**"
 
     };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll();
+       // http.authorizeRequests().anyRequest().permitAll();
         http.cors().and().csrf().disable();
         JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/auth/login");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-       //   http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
-         //http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(jwtAuthenticationFilter);
         http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
 
 
@@ -75,12 +76,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
 
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Email not found in database");
         }
         Collection<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
 }

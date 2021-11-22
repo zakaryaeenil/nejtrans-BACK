@@ -11,4 +11,5 @@ import java.util.List;
 public interface DossierRepository extends JpaRepository<Dossier,Long> {
 List<Dossier> findByTypeDossier(String TypeDossier);
 List<Dossier> findByAvailable(Integer available);
+List<Dossier> findByEmployeeUsername(String username);
 }

@@ -56,9 +56,9 @@ public class inittest implements CommandLineRunner {
 
 
         u2.setEmail("employeeEmail@gmail.com");
-        u2.setUsername("user2");
+        u2.setUsername("employee1");
         u2.setFirstName("zaki");
-        u.setPassword(bCryptPasswordEncoder.encode("password22"));
+        u2.setPassword(bCryptPasswordEncoder.encode("password"));
         u2.setLastName("hehe");
         u2.getRoles().add(roleRepository.findByName("EMPLOYEE"));
 
@@ -66,7 +66,7 @@ public class inittest implements CommandLineRunner {
         u3.setEmail("User2Email@gmail.com");
         u3.setUsername("user3");
         u3.setFirstName("mehdi");
-        u.setPassword(bCryptPasswordEncoder.encode("testpaww"));
+        u3.setPassword(bCryptPasswordEncoder.encode("password"));
         u3.setLastName("aghnim");
         u3.getRoles().add(roleRepository.findByName("USER"));
 
@@ -83,7 +83,7 @@ public class inittest implements CommandLineRunner {
 
         d.setAvailable(1);
         d.setTypeDossier("Import");
-        d.setReservation_username("user2");
+        d.setEmployeeUsername("employee1");
         d.setUser(userRepository.findByUsername("user3"));
 
 
@@ -91,14 +91,14 @@ public class inittest implements CommandLineRunner {
 
         d2.setAvailable(2);
         d2.setTypeDossier("Export");
-        d2.setReservation_username("admin1");
+        d2.setEmployeeUsername("employee1");
         d2.setUser(userRepository.findByUsername("user2"));
 
 
 
         d3.setAvailable(3);
         d3.setTypeDossier("Export");
-        d3.setReservation_username("admin1");
+        d3.setEmployeeUsername("admin1");
         d3.setUser(userRepository.findByUsername("user2"));
 
 

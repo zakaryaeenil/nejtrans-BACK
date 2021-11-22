@@ -16,7 +16,7 @@ public class DossierDTO implements Serializable {
     private String typeDossier;
     private Integer nb_documents=0;
     private Integer available=1;
-    private String reservation_username;
+    private String employeeUsername;
     private String etat;
     private Date createdAt;
     private Collection<DocumentDTO> documents=new ArrayList<>();
