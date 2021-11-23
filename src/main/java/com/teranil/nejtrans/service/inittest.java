@@ -35,11 +35,12 @@ public class inittest implements CommandLineRunner {
         Role U = new Role();
         Role R3 = new Role();
         R.setName("ADMIN");
-        U.setName("USER");
         R3.setName("EMPLOYEE");
+        U.setName("USER");
         roleRepository.save(R);
-        roleRepository.save(U);
         roleRepository.save(R3);
+        roleRepository.save(U);
+
     }
 
     public void initUser() {
@@ -88,18 +89,16 @@ public class inittest implements CommandLineRunner {
 
 
 
-
-        d2.setAvailable(2);
+        d2.setAvailable(3);
         d2.setTypeDossier("Export");
         d2.setEmployeeUsername("employee1");
-        d2.setUser(userRepository.getById(2L));
+        d2.setUser(userRepository.getById(3L));
 
 
 
-        d3.setAvailable(3);
+        d3.setAvailable(1);
         d3.setTypeDossier("Export");
-        d3.setEmployeeUsername("admin1");
-        d3.setUser(userRepository.getById(1L));
+        d3.setUser(userRepository.getById(3L));
 
 
         dossierRepository.save(d);

@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -52,4 +53,38 @@ public class UserService {
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
         return (List<Dossier>) LoggedInUser.getDossier();
     }
+
+    public void bookFolder(Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
+        Dossier dossier=dossierRepository.getById(id);
+        List<Dossier> dossierList=dossierRepository.findByEmployeeUsername("");
+        if(dossierList.contains(dossier) && dossier.getAvailable()==1){
+            dossier.setEmployeeUsername(LoggedInUser.getUsername());
+            dossierRepository.save(dossier);
+        }
+        else{
+            System.out.println("dossier deja reservé!");
+        }
+    }
+
+    public Integer employeeCompletedFoldersNumber(String empUsername){
+        List<Dossier> dossierList=dossierRepository.findByEmployeeUsername(empUsername);
+        int count=0;
+        for(int i=0;i<dossierList.size();i++){
+            if(dossierList.get(i).getAvailable()==3)
+                count++;
+        }
+        return count;
+    }
+
+    public Integer employeeFoldersNumber(String empUsername){
+        return dossierRepository.findByEmployeeUsername(empUsername).size();
+    }
+
+    public Integer userFoldersNumber(String username){
+        User user=userRepository.findByUsername(username);
+        return user.getDossier().size();
+    }
+
 }

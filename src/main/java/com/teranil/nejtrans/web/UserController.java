@@ -6,11 +6,7 @@ import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
 import com.teranil.nejtrans.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +34,25 @@ public class UserController {
     @GetMapping("/api/users/userfolder")
     public List<Dossier> getUserFolders(){
         return userService.getUserFolder();
+    }
+
+    @PutMapping("/api/users/book/{id}")
+    public void bookFolder(@PathVariable Long id){
+        userService.bookFolder(id);
+    }
+
+    @GetMapping("/api/users/empcompfoldernumber/{username}")
+    public int getEmpCompletedFoldersNumber(@PathVariable String username){
+        return userService.employeeCompletedFoldersNumber(username);
+    }
+
+    @GetMapping("/api/users/empfoldernumber/{username}")
+    public int getEmpFoldersNumber(@PathVariable String username){
+        return userService.employeeFoldersNumber(username);
+    }
+
+    @GetMapping("/api/users/userfoldernumber/{username}")
+    public int getuserFoldersNumber(@PathVariable String username){
+        return userService.userFoldersNumber(username);
     }
 }
