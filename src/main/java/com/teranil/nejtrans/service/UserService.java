@@ -93,4 +93,9 @@ public class UserService {
      User user=userRepository.getById(id);
      return (List<Dossier>) user.getDossier();
     }
+
+    public  List<Dossier> dossierTypeForUser(Long id,String type){
+        User user=userRepository.getById(id);
+        return dossierRepository.findByTypeDossierAndUser(type,user);
+    }
 }
