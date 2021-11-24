@@ -1,5 +1,6 @@
 package com.teranil.nejtrans.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Dossier implements Serializable {
     private Date createdAt;
     @OneToMany(mappedBy = "doc_dossier",cascade = CascadeType.ALL,orphanRemoval = true)
     private Collection<Document> documents=new ArrayList<>();
+    @JsonIgnore
     @ManyToOne
      private User user;
 

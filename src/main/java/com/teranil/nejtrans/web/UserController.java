@@ -8,6 +8,7 @@ import com.teranil.nejtrans.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -49,6 +50,11 @@ public class UserController {
     @GetMapping("/api/users/empfoldernumber/{username}")
     public int getEmpFoldersNumber(@PathVariable String username){
         return userService.employeeFoldersNumber(username);
+    }
+
+    @GetMapping("/api/users/{id}/dossiers")
+    public List<Dossier> getUserFolders(@PathVariable Long id){
+            return userService.adminGetUserFolderList(id);
     }
 
     @GetMapping("/api/users/userfoldernumber/{username}")

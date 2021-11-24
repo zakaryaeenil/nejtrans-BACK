@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -87,4 +88,9 @@ public class UserService {
         return user.getDossier().size();
     }
 
+
+    public List<Dossier> adminGetUserFolderList(Long id){
+     User user=userRepository.getById(id);
+     return (List<Dossier>) user.getDossier();
+    }
 }

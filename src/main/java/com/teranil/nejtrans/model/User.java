@@ -30,6 +30,7 @@ public class User implements Serializable {
     private String password;
     @CreationTimestamp
     private Date createdAt;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Role> roles = new ArrayList<>();
 
