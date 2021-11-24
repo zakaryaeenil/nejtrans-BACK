@@ -1,4 +1,4 @@
-package com.teranil.nejtrans.swagger;
+package com.teranil.nejtrans.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -69,18 +70,24 @@ public class UserService {
         }
     }
 
-    public Integer employeeCompletedFoldersNumber(String empUsername){
+    public List<Dossier> getEmployeeCompletedFolders(String empUsername){
         List<Dossier> dossierList=dossierRepository.findByEmployeeUsername(empUsername);
-        int count=0;
-        for(int i=0;i<dossierList.size();i++){
-            if(dossierList.get(i).getAvailable()==3)
-                count++;
+        List<Dossier> compList=new ArrayList<>();
+        for (Dossier dossier : dossierList) {
+            if (dossier.getAvailable() == 3)
+                compList.add(dossier);
         }
-        return count;
+        return compList;
     }
 
-    public Integer employeeFoldersNumber(String empUsername){
-        return dossierRepository.findByEmployeeUsername(empUsername).size();
+    public List<Dossier> getEmployeeCompletedFoldersByType(String empUsername,String type) {
+        return dossierRepository.findByEmployeeUsernameAndTypeDossier(empUsername,type);
+
+    }
+
+
+    public List<Dossier> getEmployeeFolders(String empUsername){
+        return dossierRepository.findByEmployeeUsername(empUsername);
     }
 
     public Integer userFoldersNumber(String username){

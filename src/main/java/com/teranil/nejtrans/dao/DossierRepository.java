@@ -15,4 +15,6 @@ List<Dossier> findByTypeDossier(String TypeDossier);
 List<Dossier> findByAvailable(Integer available);
 List<Dossier> findByEmployeeUsername(String username);
 List<Dossier> findByTypeDossierAndUser(String TypeDossier, User user);
+List<Dossier> findByEmployeeUsernameAndTypeDossier(String username,String TypeDossier);
+
 }

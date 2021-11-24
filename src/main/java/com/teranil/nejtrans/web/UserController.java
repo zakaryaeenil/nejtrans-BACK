@@ -53,15 +53,15 @@ public class UserController {
         userService.bookFolder(id);
     }
 
-    @ApiOperation(value = "Used by Admin to get how many folders has a specific employee completed ")
+    @ApiOperation(value = "Used by Admin to get a list of folders that a specific employee has completed ")
     @GetMapping("/empcompfoldernumber/{username}")
-    public int getEmpCompletedFoldersNumber(@PathVariable String username){
-        return userService.employeeCompletedFoldersNumber(username);
+    public List<Dossier> getEmpCompletedFoldersNumber(@PathVariable String username){
+        return userService.getEmployeeCompletedFolders(username);
     }
-    @ApiOperation(value = "Used by Admin to get how many folders is a specific employee working or worked on regardless on completion ")
+    @ApiOperation(value = "Used by Admin to get how a list of folders that a specific employee is working or worked on regardless on completion ")
     @GetMapping("/empfoldernumber/{username}")
-    public int getEmpFoldersNumber(@PathVariable String username){
-        return userService.employeeFoldersNumber(username);
+    public List<Dossier> getEmpFoldersNumber(@PathVariable String username){
+        return userService.getEmployeeFolders(username);
     }
 
 
@@ -78,7 +78,7 @@ public class UserController {
 
 
     @ApiOperation(value = "Used by Admin to get a list of folders by type for a specific user ")
-    @GetMapping("/dossiers/{type}")
+    @GetMapping("/{id}/dossiers/{type}")
     public List<Dossier> getUserFolderByType(@PathVariable Long id,@PathVariable String type){
         return userService.dossierTypeForUser(id,type);
     }
