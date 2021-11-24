@@ -23,7 +23,6 @@ public class UserDTO implements Serializable {
     private String email;
     private String password;
     private Date createdAt;
-    @JsonIgnore
     private Collection<RoleDTO> roles = new ArrayList<>();
     @JsonIgnore
     private Collection<DossierDTO> dossier=new ArrayList<>();
