@@ -20,7 +20,7 @@ import java.util.Date;
 @Table(name = "users")
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
@@ -36,7 +36,7 @@ public class User implements Serializable {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user")
-    private Collection<Dossier> dossier=new ArrayList<>();
+    private Collection<Dossier> dossier = new ArrayList<>();
 
 
 }

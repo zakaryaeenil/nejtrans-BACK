@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Document implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String Type_Document;

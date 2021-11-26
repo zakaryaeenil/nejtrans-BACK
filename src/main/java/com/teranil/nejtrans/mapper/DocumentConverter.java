@@ -24,7 +24,6 @@ public class DocumentConverter {
     }
 
 
-
     public Document dtoToEntity(DocumentDTO dto) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(dto, Document.class);

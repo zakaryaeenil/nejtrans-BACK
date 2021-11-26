@@ -15,25 +15,26 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/dossier")
-@Api(value="Dossier operations", description="Operations pertaining to folders in Nejtrans Application")
+@Api(value = "Dossier operations", description = "Operations pertaining to folders in Nejtrans Application")
 public class DossierController {
 
     private final DossierService dossierService;
 
     @ApiOperation(value = "Used by Admin to view a list of all folders")
     @GetMapping("/all")
-    public List<DossierDTO> getAll(){
+    public ResponseEntity<List<DossierDTO>> getAll() {
         return dossierService.getAll();
     }
 
     @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
     @PostMapping("/save")
-    public void saveDossier(@RequestBody FormClass.DossierForm form){
+    public void saveDossier(@RequestBody FormClass.DossierForm form) {
         dossierService.createDossier(form);
     }
+
     @ApiOperation(value = "Used by Admin to delete a folder by its id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDossier(@PathVariable Long id){
+    public ResponseEntity<String> deleteDossier(@PathVariable Long id) {
         return dossierService.delete(id);
     }
 

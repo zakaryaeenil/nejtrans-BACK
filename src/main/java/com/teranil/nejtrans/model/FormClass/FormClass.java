@@ -4,7 +4,7 @@ import lombok.Data;
 
 public class FormClass {
     @Data
-    public static class DossierForm{
+    public static class DossierForm {
         private String typeDossier;
         private String username;
     }

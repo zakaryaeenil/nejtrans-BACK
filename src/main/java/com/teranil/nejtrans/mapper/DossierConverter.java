@@ -4,8 +4,10 @@ import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Component
 public class DossierConverter {
 
@@ -19,7 +21,6 @@ public class DossierConverter {
         return dossiers.stream().map(this::entityToDto).collect(Collectors.toList());
 
     }
-
 
 
     public Dossier dtoToEntity(DossierDTO dto) {

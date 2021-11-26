@@ -11,11 +11,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class DossierApplication {
 
 
+    public static void main(String[] args) {
+        SpringApplication.run(DossierApplication.class, args);
+    }
+
     @Bean
     BCryptPasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public ModelMapper modelMapper() {
@@ -24,10 +27,6 @@ public class DossierApplication {
                 .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
         return modelMapper;
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(DossierApplication.class, args);
     }
 
 }

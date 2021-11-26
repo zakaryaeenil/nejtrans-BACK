@@ -1,4 +1,5 @@
 package com.teranil.nejtrans.security;
+
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,6 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements UserDetailsService {
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private UserRepository userRepository;
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2
             "/v2/api-docs",
@@ -48,6 +43,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "api/users/**"
 
     };
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -56,8 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
         JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/auth/login");
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-       // http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
-       // http.authorizeRequests().anyRequest().authenticated();
+        // http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
+        // http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(jwtAuthenticationFilter);
         http.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
