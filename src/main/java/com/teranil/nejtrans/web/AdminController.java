@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -26,12 +27,12 @@ public class AdminController {
         return adminService.getAll();
     }
 
-
     @ApiOperation(value = "Used by Admin to get a list of folders that a specific employee has completed ")
     @GetMapping("/employee/{username}/completedfolders")
     public ResponseEntity<List<DossierDTO>> getEmpCompletedFoldersNumber(@PathVariable String username) {
         return adminService.getEmployeeCompletedFolders(username);
     }
+
 
     @ApiOperation(value = "Used by Admin to get how a list of folders that a specific employee is working or worked on regardless on completion ")
     @GetMapping("/employee/{username}/folders")
@@ -39,17 +40,29 @@ public class AdminController {
         return adminService.getEmployeeFolders(username);
     }
 
+
+
     @ApiOperation(value = "Used by Admin to get how a list of folders that a specific user created ")
-    @GetMapping("/user/{username}/folders")
-    public ResponseEntity<List<DossierDTO>> getUserFoldersNumber(@PathVariable String username) {
+    @GetMapping("/users/{username}/folders")
+    public ResponseEntity<List<DossierDTO>> getUserFoldersByUsername(@PathVariable String username) {
         return adminService.userFoldersByUsername(username);
     }
 
+
+
     @ApiOperation(value = "Used by Admin to get a list of folders for a specific user  ")
     @GetMapping("/user/{id}/folders")
-    public ResponseEntity<List<DossierDTO>> getUserFolders(@PathVariable Long id) {
+    public ResponseEntity<Collection<DossierDTO>> getUserFolders(@PathVariable Long id) {
         return adminService.getUserFolderList(id);
     }
+
+
+
+//    @ApiOperation(value = "Used by Admin to get a list of folders for a specific user  ")
+//    @GetMapping("/user/{id}/folders")
+//    public ResponseEntity<List<DossierDTO>> getUserFolders(@PathVariable Long id) {
+//        return adminService.getfolders(id);
+//    }
 
 
     @ApiOperation(value = "Used by Admin to get a list of folders by type for a specific user ")

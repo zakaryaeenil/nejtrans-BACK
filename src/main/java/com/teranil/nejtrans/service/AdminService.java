@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Transactional
@@ -76,9 +74,16 @@ public class AdminService {
     }
 
     //Get folders list by user ID
-    public ResponseEntity<List<DossierDTO>> getUserFolderList(Long id) {
-        User user = userRepository.getById(id);
-        return ResponseEntity.ok().body(dossierConverter.entityToDto((List<Dossier>) user.getDossier()));
+    public ResponseEntity<Collection<DossierDTO>> getUserFolderList(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(user.get().getDossier()));
+    }
+
+    public ResponseEntity<List<DossierDTO>> getfolders(Long id){
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByUserId(id)));
     }
 
     //Get folders list by user ID and folder type
