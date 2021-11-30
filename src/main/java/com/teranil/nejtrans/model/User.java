@@ -39,4 +39,7 @@ public class User implements Serializable {
     private Collection<Dossier> dossier = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "eventUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Event> events = new ArrayList<>();
+
 }

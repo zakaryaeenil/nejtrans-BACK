@@ -1,34 +1,32 @@
 package com.teranil.nejtrans.service;
 
-import com.teranil.nejtrans.dao.DocumentRepository;
-import com.teranil.nejtrans.dao.DossierRepository;
-import com.teranil.nejtrans.dao.RoleRepository;
-import com.teranil.nejtrans.dao.UserRepository;
-import com.teranil.nejtrans.model.Document;
-import com.teranil.nejtrans.model.Dossier;
-import com.teranil.nejtrans.model.Role;
-import com.teranil.nejtrans.model.User;
+import com.teranil.nejtrans.dao.*;
+import com.teranil.nejtrans.model.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class inittest implements CommandLineRunner {
-    @Autowired
-    private DocumentRepository documentRepository;
-    @Autowired
-    private DossierRepository dossierRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final DocumentRepository documentRepository;
+
+    private final DossierRepository dossierRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final UserRepository userRepository;
+
+    private final EventRepository eventRepository;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void initRole() {
         Role R = new Role();
@@ -130,10 +128,29 @@ public class inittest implements CommandLineRunner {
         documentRepository.save(doc3);
     }
 
+    public void initEvents(){
+
+        String DateStart = "2021-07-29T08:00";
+        String DateEnd = "2021-07-29T10:00";
+        LocalDateTime dateS = LocalDateTime.parse(DateStart);
+        LocalDateTime dateE = LocalDateTime.parse(DateEnd);
+        Event b = new Event();
+        Event b2 = new Event();
+        Event b3 = new Event();
+        b.setDescription("Event for testing purposes");
+        b.setTitle("Event1");
+        b.setEventUser(userRepository.findByUsername("user3"));
+        b.setStartDate(dateS);
+        b.setEndDate(dateE);
+        eventRepository.save(b);
+
+    }
+
     @Override
     public void run(String... args) throws Exception {
         initRole();
         initUser();
+        initEvents();
         initDossier();
         initDocument();
     }
