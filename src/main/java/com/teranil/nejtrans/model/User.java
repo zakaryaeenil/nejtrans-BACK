@@ -12,9 +12,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+
 
 
 @Entity
@@ -37,6 +38,7 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String username;
     private String address;
+    private String telephone;
     @Column(nullable = false, unique = true)
     private String email;
     @NotBlank(message = "Password is required")
@@ -44,8 +46,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
     @CreationTimestamp
-    private Date createdAt;
-
+    private LocalDateTime createdAt;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Role> roles = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package com.teranil.nejtrans.web;
 
+import com.teranil.nejtrans.model.FormClass.FormClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
 import com.teranil.nejtrans.service.AdminService;
@@ -58,11 +59,12 @@ public class AdminController {
 
 
 
-//    @ApiOperation(value = "Used by Admin to get a list of folders for a specific user  ")
-//    @GetMapping("/user/{id}/folders")
-//    public ResponseEntity<List<DossierDTO>> getUserFolders(@PathVariable Long id) {
-//        return adminService.getfolders(id);
-//    }
+        @ApiOperation(value = "Used by Admin to get count of folders by year and month for a specific user  ")
+        @GetMapping("/user/{id}/folders/year")
+    public Collection<FormClass.DossierByUserAndYear> getUserFoldersByYear(@PathVariable Long id) {
+            return adminService.getUserFoldersListByYear(id);
+        }
+
 
 
     @ApiOperation(value = "Used by Admin to get a list of folders by type for a specific user ")

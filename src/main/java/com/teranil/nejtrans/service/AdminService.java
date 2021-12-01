@@ -5,6 +5,7 @@ import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
+import com.teranil.nejtrans.model.FormClass.FormClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.*;
 
 @Service
@@ -80,6 +83,43 @@ public class AdminService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.ok().body(dossierConverter.entityToDto(user.get().getDossier()));
+    }
+
+    public Collection<FormClass.DossierByUserAndYear> getUserFoldersListByYear(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return null;
+        }
+        Collection<FormClass.DossierByUserAndYear> resultlist=new ArrayList<>();
+        Collection<Dossier> dossiers=user.get().getDossier();
+        List<LocalDateTime> times=new ArrayList<>();
+
+            for(Dossier dossier:dossiers){
+                    times.add(dossier.getCreatedAt());
+            }
+
+        Map < YearMonth, List < LocalDateTime > > mapYearMonthToLdts = new TreeMap <>();
+
+        for ( LocalDateTime ldt : times )
+        {
+            List<LocalDateTime> listOfLdts = mapYearMonthToLdts.computeIfAbsent(YearMonth.from(ldt), k -> new ArrayList<>());
+            listOfLdts.add( ldt );
+        }
+
+
+        for ( YearMonth yearMonth : mapYearMonthToLdts.keySet() )
+        {
+            FormClass.DossierByUserAndYear result=new FormClass.DossierByUserAndYear();
+            result.setMonth(yearMonth.getMonth().toString());
+            result.setYear(yearMonth.getYear());
+            result.setCount(mapYearMonthToLdts.get( yearMonth ).size());
+            resultlist.add(result);
+        }
+
+
+
+return resultlist;
+
     }
 
     public ResponseEntity<List<DossierDTO>> getfolders(Long id){

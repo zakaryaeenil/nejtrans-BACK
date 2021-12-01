@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class UserDTO implements Serializable {
     private String address;
     private String email;
     private String password;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @JsonIgnore
     private Collection<DossierDTO> dossier = new ArrayList<>();
     private Collection<RoleDTO> roles = new ArrayList<>();

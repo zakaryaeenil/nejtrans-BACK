@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class DossierDTO implements Serializable {
     private Integer available = 1;
     private String employeeUsername;
     private String etat;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Collection<DocumentDTO> documents = new ArrayList<>();
     private UserDTO user;
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -50,6 +51,7 @@ public class inittest implements CommandLineRunner {
         u.setFirstName("Jhonny");
         u.setPassword(bCryptPasswordEncoder.encode("password"));
         u.setLastName("Depp");
+        u.setTelephone("0606060606");
         u.getRoles().add(roleRepository.findByName("ADMIN"));
 
 
@@ -58,6 +60,7 @@ public class inittest implements CommandLineRunner {
         u2.setFirstName("zaki");
         u2.setPassword(bCryptPasswordEncoder.encode("password"));
         u2.setLastName("hehe");
+        u2.setTelephone("0606060606");
         u2.getRoles().add(roleRepository.findByName("EMPLOYEE"));
 
 
@@ -66,6 +69,7 @@ public class inittest implements CommandLineRunner {
         u3.setFirstName("mehdi");
         u3.setPassword(bCryptPasswordEncoder.encode("password"));
         u3.setLastName("aghnim");
+        u3.setTelephone("0606060606");
         u3.getRoles().add(roleRepository.findByName("USER"));
 
         userRepository.save(u);
@@ -89,6 +93,8 @@ public class inittest implements CommandLineRunner {
         d2.setTypeDossier("Export");
         d2.setEmployeeUsername("employee1");
         d2.setUser(userRepository.getById(3L));
+
+
 
 
         d3.setAvailable(1);

@@ -7,9 +7,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+
 
 
 @Entity
@@ -26,7 +27,7 @@ public class Dossier implements Serializable {
     private String employeeUsername = "";
     private String etat;
     @CreationTimestamp
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @OneToMany(mappedBy = "doc_dossier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Document> documents = new ArrayList<>();
     @ManyToOne
