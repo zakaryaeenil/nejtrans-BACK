@@ -85,7 +85,7 @@ public class AdminService {
         return ResponseEntity.ok().body(dossierConverter.entityToDto(user.get().getDossier()));
     }
 
-    public Collection<FormClass.DossierByUserAndYear> getUserFoldersListByYear(Long id) {
+    public Collection<FormClass.DossierByUserAndYear> getUserFoldersListByYear(Long id,int year) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             return null;
@@ -95,6 +95,7 @@ public class AdminService {
         List<LocalDateTime> times=new ArrayList<>();
 
             for(Dossier dossier:dossiers){
+                if(dossier.getCreatedAt().getYear()==year)
                     times.add(dossier.getCreatedAt());
             }
 

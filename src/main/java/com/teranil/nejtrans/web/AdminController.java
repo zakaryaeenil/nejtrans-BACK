@@ -60,9 +60,9 @@ public class AdminController {
 
 
         @ApiOperation(value = "Used by Admin to get count of folders by year and month for a specific user  ")
-        @GetMapping("/user/{id}/folders/year")
-    public Collection<FormClass.DossierByUserAndYear> getUserFoldersByYear(@PathVariable Long id) {
-            return adminService.getUserFoldersListByYear(id);
+        @GetMapping("/user/{id}/folders/{year}")
+    public Collection<FormClass.DossierByUserAndYear> getUserFoldersByYear(@PathVariable Long id,@PathVariable int year) {
+            return adminService.getUserFoldersListByYear(id,year);
         }
 
 
