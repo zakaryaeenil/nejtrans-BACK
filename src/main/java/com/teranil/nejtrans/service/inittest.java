@@ -3,14 +3,14 @@ package com.teranil.nejtrans.service;
 import com.teranil.nejtrans.dao.*;
 import com.teranil.nejtrans.model.*;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Service
 @Transactional
@@ -83,7 +83,7 @@ public class inittest implements CommandLineRunner {
         Dossier d2 = new Dossier();
         Dossier d3 = new Dossier();
 
-        d.setAvailable(1);
+        d.setAvailable(2);
         d.setTypeDossier("Import");
         d.setEmployeeUsername("employee1");
         d.setUser(userRepository.getById(3L));

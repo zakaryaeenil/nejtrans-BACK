@@ -23,4 +23,6 @@ public interface DossierRepository extends JpaRepository<Dossier, Long> {
 
     List<Dossier> findByUserId(Long id);
 
+    List<Dossier> findByEmployeeUsernameAndAvailable(String username,int available );
+
 }

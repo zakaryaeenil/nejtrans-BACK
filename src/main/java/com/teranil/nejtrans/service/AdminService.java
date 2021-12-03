@@ -90,14 +90,36 @@ public class AdminService {
         if (user.isEmpty()) {
             return null;
         }
+      Collection<Dossier> collection=user.get().getDossier();
+    return function(collection,year);
+    }
+
+    public Collection<FormClass.DossierByUserAndYear> getEmpFoldersListByYear(int year,String emp,int available){
+        List<Dossier> dossiers=dossierRepository.findByEmployeeUsernameAndAvailable(emp,available);
+        return function(dossiers,year);
+    }
+
+
+    public ResponseEntity<List<DossierDTO>> getfolders(Long id){
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByUserId(id)));
+    }
+
+    //Get folders list by user ID and folder type
+    public ResponseEntity<List<DossierDTO>> getFoldersListByTypeForUser(Long id, String type) {
+        User user = userRepository.getById(id);
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByTypeDossierAndUser(type, user)));
+    }
+
+
+
+    public Collection<FormClass.DossierByUserAndYear>function(Collection<Dossier> d ,int year){
         Collection<FormClass.DossierByUserAndYear> resultlist=new ArrayList<>();
-        Collection<Dossier> dossiers=user.get().getDossier();
         List<LocalDateTime> times=new ArrayList<>();
 
-            for(Dossier dossier:dossiers){
-                if(dossier.getCreatedAt().getYear()==year)
-                    times.add(dossier.getCreatedAt());
-            }
+        for(Dossier dossier:d){
+            if(year==dossier.getCreatedAt().getYear())
+                times.add(dossier.getCreatedAt());
+        }
 
         Map < YearMonth, List < LocalDateTime > > mapYearMonthToLdts = new TreeMap <>();
 
@@ -117,21 +139,6 @@ public class AdminService {
             resultlist.add(result);
         }
 
-
-
-return resultlist;
-
+        return resultlist;
     }
-
-    public ResponseEntity<List<DossierDTO>> getfolders(Long id){
-        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByUserId(id)));
-    }
-
-    //Get folders list by user ID and folder type
-    public ResponseEntity<List<DossierDTO>> getFoldersListByTypeForUser(Long id, String type) {
-        User user = userRepository.getById(id);
-        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByTypeDossierAndUser(type, user)));
-    }
-
-
 }

@@ -64,6 +64,10 @@ public class AdminController {
     public Collection<FormClass.DossierByUserAndYear> getUserFoldersByYear(@PathVariable Long id,@PathVariable int year) {
             return adminService.getUserFoldersListByYear(id,year);
         }
+        @GetMapping("/employee/{username}/folders/{available}/{year}")
+        public Collection<FormClass.DossierByUserAndYear> getEmpFoldersByAvailableAndYear(@PathVariable String username,@PathVariable int available,@PathVariable int year){
+        return adminService.getEmpFoldersListByYear(year,username,available);
+        }
 
 
 
