@@ -1,17 +1,21 @@
 package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DossierRepository;
+import com.teranil.nejtrans.dao.RoleRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.FormClass.FormClass;
+import com.teranil.nejtrans.model.Role;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
+import com.teranil.nejtrans.security.SecurityParams;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +30,9 @@ public class AdminService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
     private final DossierRepository dossierRepository;
+    private final RoleRepository roleRepository;
     private final DossierConverter dossierConverter;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok().body(userConverter.entityToDto(userRepository.findAll()));
@@ -113,6 +119,16 @@ public class AdminService {
         User user = userRepository.getById(id);
         return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByTypeDossierAndUser(type, user)));
     }
+
+
+    public void CreateUser(UserDTO userDTO,Long roleid){
+        User user = userConverter.dtoToEntity(userDTO);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singletonList(roleRepository.getById(roleid)));
+        userRepository.save(user);
+    }
+
+
 
 
 

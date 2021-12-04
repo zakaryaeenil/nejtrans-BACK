@@ -40,6 +40,7 @@ public class ClientService {
         Dossier dossier = new Dossier();
         dossier.setTypeDossier(form.getTypeDossier());
         dossier.setUser(LoggedInUser);
+        LoggedInUser.setCountDossiers(LoggedInUser.getCountDossiers()+1);
         dossierRepository.save(dossier);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/createfoler").toUriString());
         return ResponseEntity.created(uri).body("Dossier created succesfully");

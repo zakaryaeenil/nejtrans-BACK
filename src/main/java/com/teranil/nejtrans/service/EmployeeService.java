@@ -42,6 +42,7 @@ public class EmployeeService {
         if (dossierList.contains(dossier) && dossier.getAvailable() == 1) {
             dossier.setEmployeeUsername(LoggedInUser.getUsername());
             dossierRepository.save(dossier);
+            LoggedInUser.setCountReservations(LoggedInUser.getCountReservations()+1);
             return ResponseEntity.ok().body("booked successfully ");
         } else {
             return ResponseEntity.badRequest().body("Error during reservation !");

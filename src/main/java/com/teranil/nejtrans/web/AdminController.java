@@ -66,8 +66,10 @@ public class AdminController {
         public Collection<FormClass.DossierByUserAndYear> getEmpFoldersByAvailableAndYear(@PathVariable String username,@PathVariable int available,@PathVariable int year){
         return adminService.getEmpFoldersListByYear(year,username,available);
         }
-
-
+@PostMapping("/user/create/role/{id}")
+public void CreateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
+         adminService.CreateUser(userDTO,id);
+}
 
     @ApiOperation(value = "Used by Admin to get a list of folders by type for a specific user ")
     @GetMapping("/user/{id}/dossiers/{type}")

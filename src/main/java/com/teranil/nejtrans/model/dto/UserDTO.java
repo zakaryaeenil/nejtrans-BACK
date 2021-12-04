@@ -25,6 +25,10 @@ public class UserDTO implements Serializable {
     private String address;
     private String email;
     private String password;
+    private String telephone;
+    private int countDossiers=0;
+    private int countReservations=0;
+
     private LocalDateTime createdAt;
     @JsonIgnore
     private Collection<DossierDTO> dossier = new ArrayList<>();

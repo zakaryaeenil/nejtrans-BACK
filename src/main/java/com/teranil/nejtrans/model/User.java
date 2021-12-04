@@ -39,6 +39,8 @@ public class User implements Serializable {
     private String username;
     private String address;
     private String telephone;
+    private int countDossiers=0;
+    private int countReservations=0;
     @Column(nullable = false, unique = true)
     private String email;
     @NotBlank(message = "Password is required")
