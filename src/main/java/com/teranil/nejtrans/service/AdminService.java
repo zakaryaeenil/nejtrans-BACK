@@ -47,6 +47,10 @@ public class AdminService {
         return ResponseEntity.ok().body(dossierConverter.entityToDto(compList));
     }
 
+    public ResponseEntity<Integer> getEmployeeFoldersCountByType(String username,String type){
+        List<Dossier> dossierList=dossierRepository.findByEmployeeUsernameAndTypeDossier(username,type);
+        return ResponseEntity.ok().body(dossierList.size());
+    }
 
     //Admin can get a list of completed folders by employee and folder type
     public ResponseEntity<List<DossierDTO>> getEmployeeCompletedFoldersByType(String empUsername, String type) {

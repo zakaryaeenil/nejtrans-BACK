@@ -15,6 +15,7 @@ public class FormClass {
         private Integer year;
         private String Month;
         private Integer Count;
+        private Integer CountReserved;
 
     }
 

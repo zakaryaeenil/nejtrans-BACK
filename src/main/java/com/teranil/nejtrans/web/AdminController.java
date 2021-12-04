@@ -42,13 +42,11 @@ public class AdminController {
     }
 
 
-
-    @ApiOperation(value = "Used by Admin to get how a list of folders that a specific user created ")
-    @GetMapping("/users/{username}/folders")
-    public ResponseEntity<List<DossierDTO>> getUserFoldersByUsername(@PathVariable String username) {
-        return adminService.userFoldersByUsername(username);
+    @ApiOperation(value = "Used by Admin to get how a  count of folders that a specific employee is working or worked on regardless on completion by Folder type")
+    @GetMapping("/employee/{username}/folders/{type}")
+    public ResponseEntity<Integer> getEmpFoldersNumber(@PathVariable String username,@PathVariable String type) {
+        return adminService.getEmployeeFoldersCountByType(username,type);
     }
-
 
 
     @ApiOperation(value = "Used by Admin to get a list of folders for a specific user  ")
