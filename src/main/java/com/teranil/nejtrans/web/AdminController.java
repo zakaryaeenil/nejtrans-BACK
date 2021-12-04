@@ -71,10 +71,17 @@ public void CreateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
          adminService.CreateUser(userDTO,id);
 }
 
+    @PostMapping("/event/create")
+    public ResponseEntity<String> CreateEvent(@RequestBody FormClass.UserEventForm form){
+        return adminService.CreateEvent(form);
+    }
+
     @ApiOperation(value = "Used by Admin to get a list of folders by type for a specific user ")
     @GetMapping("/user/{id}/dossiers/{type}")
     public ResponseEntity<List<DossierDTO>> getUserFolderByType(@PathVariable Long id, @PathVariable String type) {
         return adminService.getFoldersListByTypeForUser(id, type);
     }
+
+
 
 }

@@ -1,11 +1,13 @@
 package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DossierRepository;
+import com.teranil.nejtrans.dao.EventRepository;
 import com.teranil.nejtrans.dao.RoleRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
+import com.teranil.nejtrans.model.Event;
 import com.teranil.nejtrans.model.FormClass.FormClass;
 import com.teranil.nejtrans.model.Role;
 import com.teranil.nejtrans.model.User;
@@ -31,6 +33,7 @@ public class AdminService {
     private final UserConverter userConverter;
     private final DossierRepository dossierRepository;
     private final RoleRepository roleRepository;
+    private final EventRepository eventRepository;
     private final DossierConverter dossierConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -129,6 +132,24 @@ public class AdminService {
     }
 
 
+    public ResponseEntity<String> CreateEvent(FormClass.UserEventForm form){
+        LocalDateTime dateS = LocalDateTime.parse(form.getDateStart());
+        LocalDateTime dateE = LocalDateTime.parse(form.getDateEnd());
+        if (dateS.isAfter(dateE) ||
+                dateE.isEqual(dateS) ||
+                dateE.isBefore(LocalDateTime.now()) ||
+                dateS.isBefore(LocalDateTime.now())) {
+            return ResponseEntity.badRequest().body("Your date does not fit criteria");
+        }
+        Event event=new Event();
+        event.setEventUser(userRepository.findByUsername(form.getUsername()));
+        event.setDescription(form.getDescription());
+        event.setTitle(form.getTitle());
+        event.setStartDate(dateS);
+        event.setEndDate(dateE);
+        eventRepository.save(event);
+        return ResponseEntity.ok().body("Created Succesffuly");
+    }
 
 
 

@@ -16,7 +16,16 @@ public class FormClass {
         private String Month;
         private Integer Count;
         private Integer CountReserved;
-
     }
+
+    @Data
+    public static class UserEventForm {
+        private String dateStart;
+        private String dateEnd;
+        private String description;
+        private String title;
+        private String username;
+    }
+
 
 }
