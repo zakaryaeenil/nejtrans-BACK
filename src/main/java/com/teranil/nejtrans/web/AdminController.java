@@ -82,6 +82,11 @@ public void CreateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
         return adminService.getFoldersListByTypeForUser(id, type);
     }
 
+    @GetMapping("/dossiers/count/{type}")
+    public ResponseEntity<Integer> CountFolders(@PathVariable String type){
+        return adminService.countFoldersByType(type);
+    }
+
 
 
 }

@@ -9,11 +9,9 @@ import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.Event;
 import com.teranil.nejtrans.model.FormClass.FormClass;
-import com.teranil.nejtrans.model.Role;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
-import com.teranil.nejtrans.security.SecurityParams;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -151,6 +149,36 @@ public class AdminService {
         return ResponseEntity.ok().body("Created Succesffuly");
     }
 
+
+        public ResponseEntity<Integer> countFoldersByType(String type){
+        int count = 0;
+            System.out.println(type);
+            switch(type){
+                case "EmpTotal":
+                    List<User> EmpList= userRepository.findByRoles_Id(2L);
+                    count=EmpList.size();
+                    break;
+                case "ClientTotal":
+                    List<User> ClientsList=userRepository.findByRoles_Id(3L);
+                   count=ClientsList.size();
+                    break;
+                case "FolTotal":
+                    List<Dossier> dossierList=dossierRepository.findAll();
+                    count=dossierList.size();
+                    break;
+                case "ImportTotal":
+                    List<Dossier> dossier=dossierRepository.findByTypeDossier("Import");
+                    count=dossier.size();
+                    break;
+                case "ExportTotal":
+                    List<Dossier> dossiers=dossierRepository.findByTypeDossier("Export");
+                    count=dossiers.size();
+                    break;
+                default:
+                   return ResponseEntity.badRequest().body(null);
+            }
+        return ResponseEntity.ok().body(count);
+        }
 
 
     public Collection<FormClass.DossierByUserAndYear>function(Collection<Dossier> d ,int year){
