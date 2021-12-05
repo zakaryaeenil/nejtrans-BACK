@@ -142,8 +142,8 @@ public class inittest implements CommandLineRunner {
 
     public void initEvents(){
 
-        String DateStart = "2021-07-29T08:00";
-        String DateEnd = "2021-07-29T10:00";
+        String DateStart = "2021-12-29T08:00";
+        String DateEnd = "2021-12-29T10:00";
         LocalDateTime dateS = LocalDateTime.parse(DateStart);
         LocalDateTime dateE = LocalDateTime.parse(DateEnd);
         Event b = new Event();

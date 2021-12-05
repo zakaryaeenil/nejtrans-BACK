@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EventDTO implements Serializable {
     private Long id;
-    private String Title;
-    private String Description;
+    private String title;
+    private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private UserDTO eventUser;

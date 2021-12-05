@@ -130,6 +130,11 @@ public class AdminService {
     }
 
 
+    public Collection<FormClass.DossierByUserAndYear> getTotalFoldersByYear(int year){
+        List<Dossier> dossiers=dossierRepository.findAll();
+        return function(dossiers,year);
+    }
+
     public ResponseEntity<String> CreateEvent(FormClass.UserEventForm form){
         LocalDateTime dateS = LocalDateTime.parse(form.getDateStart());
         LocalDateTime dateE = LocalDateTime.parse(form.getDateEnd());
@@ -181,7 +186,7 @@ public class AdminService {
         }
 
 
-    public Collection<FormClass.DossierByUserAndYear>function(Collection<Dossier> d ,int year){
+    public Collection<FormClass.DossierByUserAndYear> function(Collection<Dossier> d ,int year){
         Collection<FormClass.DossierByUserAndYear> resultlist=new ArrayList<>();
         List<LocalDateTime> times=new ArrayList<>();
 

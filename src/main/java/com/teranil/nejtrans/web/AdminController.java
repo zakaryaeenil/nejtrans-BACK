@@ -87,6 +87,8 @@ public void CreateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
         return adminService.countFoldersByType(type);
     }
 
-
-
+    @GetMapping("dossiers/count/total/{year}")
+   public Collection<FormClass.DossierByUserAndYear> CountFoldersByYear(@PathVariable int year){
+        return adminService.getTotalFoldersByYear(year);
+   }
 }
