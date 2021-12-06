@@ -56,7 +56,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private Collection<Dossier> dossier = new ArrayList<>();
 
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "eventUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Event> events = new ArrayList<>();
 

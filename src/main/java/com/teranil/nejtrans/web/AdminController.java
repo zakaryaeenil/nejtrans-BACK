@@ -1,5 +1,6 @@
 package com.teranil.nejtrans.web;
 
+import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.FormClass.FormClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
@@ -87,8 +88,13 @@ public void CreateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
         return adminService.countFoldersByType(type);
     }
 
-    @GetMapping("dossiers/count/total/{year}")
+    @GetMapping("/dossiers/count/total/{year}")
    public Collection<FormClass.DossierByUserAndYear> CountFoldersByYear(@PathVariable int year){
         return adminService.getTotalFoldersByYear(year);
+   }
+
+   @GetMapping("/user/{id}/folders/{type}/{year}")
+   public ResponseEntity<List<DossierDTO>> FoldersByUserByTypeAndByYear(@PathVariable Long id,@PathVariable String type,@PathVariable int year){
+        return adminService.getFoldersByClientByTypeAndByYear(id,type,year);
    }
 }

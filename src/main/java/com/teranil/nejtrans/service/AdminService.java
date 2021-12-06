@@ -129,6 +129,32 @@ public class AdminService {
         userRepository.save(user);
     }
 
+    public ResponseEntity<List<DossierDTO>> getFoldersByClientByTypeAndByYear(Long id,String type,int year){
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<Dossier> dossierList;
+        List<Dossier> result=new ArrayList<>();
+        switch(type){
+            case "Import":
+            case "Export":
+                dossierList=dossierRepository.findByTypeDossierAndUser(type,user.get());
+                break;
+            case "All":
+                dossierList= (List<Dossier>) user.get().getDossier();
+                break;
+            default :
+                return ResponseEntity.badRequest().body(null);
+
+        }
+        for(Dossier dossier:dossierList){
+            if(dossier.getCreatedAt().getYear()==year){
+                result.add(dossier);
+            }
+        }
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(result));
+    }
 
     public Collection<FormClass.DossierByUserAndYear> getTotalFoldersByYear(int year){
         List<Dossier> dossiers=dossierRepository.findAll();
