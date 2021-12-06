@@ -45,8 +45,13 @@ public class AdminController {
 
     @ApiOperation(value = "Used by Admin to get how a  count of folders that a specific employee is working or worked on regardless on completion by Folder type")
     @GetMapping("/employee/{username}/folders/{type}")
-    public ResponseEntity<Integer> getEmpFoldersNumber(@PathVariable String username,@PathVariable String type) {
+    public ResponseEntity<Integer> getEmpFoldersNumberByType(@PathVariable String username,@PathVariable String type) {
         return adminService.getEmployeeFoldersCountByType(username,type);
+    }
+
+    @GetMapping("/employee/{username}/count/{type}/{year}")
+    public ResponseEntity<Integer> getEmpFoldersNumberByTypeAndYear(@PathVariable String username,@PathVariable String type,@PathVariable int year) {
+        return adminService.getEmployeeFoldersCountByTypeAndYear(username,type,year);
     }
 
 

@@ -66,8 +66,20 @@ public class AdminService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByEmployeeUsernameAndTypeDossier(empUsername, type)));
-
     }
+
+
+    public ResponseEntity<Integer> getEmployeeFoldersCountByTypeAndYear(String username,String type,int year){
+        List<Dossier> dossierList=dossierRepository.findByEmployeeUsernameAndTypeDossier(username,type);
+        List<Dossier> result=new ArrayList<>();
+        for(Dossier dossier:dossierList){
+            if(dossier.getCreatedAt().getYear()==year){
+                result.add(dossier);
+            }
+        }
+        return ResponseEntity.ok().body(result.size());
+    }
+
 
     //Admin can get a list of employee folders by username
     public ResponseEntity<List<DossierDTO>> getEmployeeFolders(String empUsername) {
