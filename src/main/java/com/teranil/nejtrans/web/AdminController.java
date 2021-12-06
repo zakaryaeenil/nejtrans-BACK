@@ -61,11 +61,16 @@ public class AdminController {
         return adminService.getUserFolderList(id);
     }
 
+    @GetMapping("/user/{id}/folder/{year}")
+    public ResponseEntity<Collection<DossierDTO>> getUserFoldersByYear(@PathVariable Long id,@PathVariable int year){
+        return adminService.getUserFolderListByYear(id,year);
+    }
+
 
 
         @ApiOperation(value = "Used by Admin to get count of folders by year and month for a specific user  ")
         @GetMapping("/user/{id}/folders/{year}")
-    public Collection<FormClass.DossierByUserAndYear> getUserFoldersByYear(@PathVariable Long id,@PathVariable int year) {
+    public Collection<FormClass.DossierByUserAndYear> getUserFoldersByYearAndMonth(@PathVariable Long id,@PathVariable int year) {
             return adminService.getUserFoldersListByYear(id,year);
         }
         @GetMapping("/employee/{username}/folders/{available}/{year}")

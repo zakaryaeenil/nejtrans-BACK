@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.crypto.dsig.dom.DOMSignContext;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
@@ -108,6 +109,24 @@ public class AdminService {
         return ResponseEntity.ok().body(dossierConverter.entityToDto(user.get().getDossier()));
     }
 
+
+    public ResponseEntity<Collection<DossierDTO>> getUserFolderListByYear(Long id,int year) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        Collection<Dossier> dossierList=user.get().getDossier();
+        Collection<Dossier> result = new ArrayList<>();
+        for(Dossier dossier:dossierList){
+            if(dossier.getCreatedAt().getYear()==year)
+                result.add(dossier);
+        }
+
+
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(result));
+    }
+
+
     public Collection<FormClass.DossierByUserAndYear> getUserFoldersListByYear(Long id,int year) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -132,6 +151,8 @@ public class AdminService {
         User user = userRepository.getById(id);
         return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByTypeDossierAndUser(type, user)));
     }
+
+
 
 
     public void CreateUser(UserDTO userDTO,Long roleid){
