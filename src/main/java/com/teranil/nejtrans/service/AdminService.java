@@ -19,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.crypto.dsig.dom.DOMSignContext;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.*;
@@ -126,6 +125,17 @@ public class AdminService {
         return ResponseEntity.ok().body(dossierConverter.entityToDto(result));
     }
 
+    public ResponseEntity<Integer> getFoldersListByYear(String type,int year){
+        Collection<Dossier> dossiers=dossierRepository.findByTypeDossier(type);
+        Collection <Dossier> result=new ArrayList<>();
+        for(Dossier dossier:dossiers){
+            if(dossier.getCreatedAt().getYear()==year){
+                result.add(dossier);
+            }
+        }
+        return ResponseEntity.ok().body(result.size());
+    }
+
 
     public Collection<FormClass.DossierByUserAndYear> getUserFoldersListByYear(Long id,int year) {
         Optional<User> user = userRepository.findById(id);
@@ -215,7 +225,7 @@ public class AdminService {
 
 
         public ResponseEntity<Integer> countFoldersByType(String type){
-        int count = 0;
+        int count ;
             System.out.println(type);
             switch(type){
                 case "EmpTotal":

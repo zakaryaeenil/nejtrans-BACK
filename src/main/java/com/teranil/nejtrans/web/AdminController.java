@@ -1,6 +1,6 @@
 package com.teranil.nejtrans.web;
 
-import com.teranil.nejtrans.model.Dossier;
+
 import com.teranil.nejtrans.model.FormClass.FormClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
@@ -33,6 +33,11 @@ public class AdminController {
     @GetMapping("/employee/{username}/completedfolders")
     public ResponseEntity<List<DossierDTO>> getEmpCompletedFoldersNumber(@PathVariable String username) {
         return adminService.getEmployeeCompletedFolders(username);
+    }
+
+    @GetMapping("/folders/{type}/{year}")
+    public ResponseEntity<Integer> getFoldersCountByYear(@PathVariable String type,@PathVariable int year){
+        return adminService.getFoldersListByYear(type,year);
     }
 
 
