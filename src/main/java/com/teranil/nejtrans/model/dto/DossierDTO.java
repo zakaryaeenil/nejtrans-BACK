@@ -1,6 +1,6 @@
 package com.teranil.nejtrans.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
