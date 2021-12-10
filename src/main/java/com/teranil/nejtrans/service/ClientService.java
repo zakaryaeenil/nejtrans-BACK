@@ -5,11 +5,12 @@ import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
-import com.teranil.nejtrans.model.FormClass.FormClass;
+import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,9 +31,10 @@ public class ClientService {
     private final UserConverter userConverter;
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
+    private final MailSenderService mailSender;
 
     //Logged in Client can create a folder of documents
-    public ResponseEntity<String> createFolder(FormClass.DossierForm form) {
+    public ResponseEntity<String> createFolder(HelperClass.DossierForm form) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
         if (Objects.isNull(LoggedInUser) && (Objects.isNull(form))) {
@@ -42,7 +45,17 @@ public class ClientService {
         dossier.setUser(LoggedInUser);
         LoggedInUser.setCountDossiers(LoggedInUser.getCountDossiers()+1);
         dossierRepository.save(dossier);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/createfoler").toUriString());
+        List<User> users=userRepository.findByRoles_Id(1L);
+        String body="User "+dossier.getUser().getUsername()+" has created folder "+dossier.getId()+" "+dossier.getTypeDossier()+" at "+dossier.getCreatedAt()
+                .format(DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm"));
+        for (User user : users) {
+            try {
+                mailSender.SendEmail(user.getEmail(),"New folder has been created!",body);
+            } catch (MailException mailException) {
+                mailException.printStackTrace();
+            }
+        }
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/client/createfoler").toUriString());
         return ResponseEntity.created(uri).body("Dossier created succesfully");
     }
 

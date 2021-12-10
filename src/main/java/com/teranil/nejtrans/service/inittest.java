@@ -2,6 +2,7 @@ package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.*;
 import com.teranil.nejtrans.model.*;
+
 import lombok.AllArgsConstructor;
 
 import org.springframework.boot.CommandLineRunner;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+
+import static com.teranil.nejtrans.model.Util.HelperClass.*;
 
 
 @Service
@@ -84,7 +87,7 @@ public class inittest implements CommandLineRunner {
         Dossier d2 = new Dossier();
         Dossier d3 = new Dossier();
 
-        d.setAvailable(2);
+        d.setAvailable(EnTraitement);
         d.setTypeDossier("Import");
         d.setEmployeeUsername("employee1");
         User user2 =userRepository.findByUsername(d.getEmployeeUsername());
@@ -93,7 +96,7 @@ public class inittest implements CommandLineRunner {
         d.getUser().setCountDossiers(d.getUser().getCountDossiers()+1);
 
 
-        d2.setAvailable(3);
+        d2.setAvailable(Terminer);
         d2.setTypeDossier("Export");
         d2.setEmployeeUsername("employee1");
         User user =userRepository.findByUsername(d2.getEmployeeUsername());
@@ -103,7 +106,7 @@ public class inittest implements CommandLineRunner {
 
 
 
-        d3.setAvailable(1);
+        d3.setAvailable(EnAttente);
         d3.setTypeDossier("Export");
         d3.setUser(userRepository.getById(3L));
         d3.getUser().setCountDossiers(d3.getUser().getCountDossiers()+1);
@@ -122,18 +125,18 @@ public class inittest implements CommandLineRunner {
 
         doc.setName("Doc1");
         doc.setType_Document("CV");
-        doc.setDoc_dossier(dossierRepository.getById(1L));
-        doc.getDoc_dossier().setNb_documents(doc.getDoc_dossier().getNb_documents() + 1);
+        doc.setDossier(dossierRepository.getById(1L));
+        doc.getDossier().setNb_documents(doc.getDossier().getNb_documents() + 1);
 
         doc2.setName("Doc2");
         doc2.setType_Document("Lettre motivation");
-        doc2.setDoc_dossier(dossierRepository.getById(2L));
-        doc2.getDoc_dossier().setNb_documents(doc2.getDoc_dossier().getNb_documents() + 1);
+        doc2.setDossier(dossierRepository.getById(2L));
+        doc2.getDossier().setNb_documents(doc2.getDossier().getNb_documents() + 1);
 
         doc3.setName("Doc3");
         doc3.setType_Document("Acte naissance");
-        doc3.setDoc_dossier(dossierRepository.getById(1L));
-        doc3.getDoc_dossier().setNb_documents(doc3.getDoc_dossier().getNb_documents() + 1);
+        doc3.setDossier(dossierRepository.getById(1L));
+        doc3.getDossier().setNb_documents(doc3.getDossier().getNb_documents() + 1);
 
 
         documentRepository.save(doc);

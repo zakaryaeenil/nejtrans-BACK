@@ -1,10 +1,17 @@
-package com.teranil.nejtrans.model.FormClass;
+package com.teranil.nejtrans.model.Util;
 
 import lombok.Data;
 
 
 
-public class FormClass {
+public class HelperClass {
+
+    public static final Integer EnAttente =1;
+    public static final Integer EnTraitement =2;
+    public static final Integer Terminer =3;
+
+
+
     @Data
     public static class DossierForm {
         private String typeDossier;
@@ -25,6 +32,9 @@ public class FormClass {
         private String title;
         private String username;
     }
+
+
+
 
 
 }

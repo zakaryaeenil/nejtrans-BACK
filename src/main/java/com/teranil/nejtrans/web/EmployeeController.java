@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @ApiOperation(value = "Used by Logged in employee to reserve a Folder")
-    @PutMapping("/bookfoolder/{id}")
+    @PatchMapping("/bookfoolder/{id}")
     public ResponseEntity<String> bookFolder(@PathVariable Long id) {
         return employeeService.bookFolder(id);
     }

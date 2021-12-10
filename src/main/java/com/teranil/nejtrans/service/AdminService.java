@@ -8,7 +8,7 @@ import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.Event;
-import com.teranil.nejtrans.model.FormClass.FormClass;
+import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
@@ -137,7 +137,7 @@ public class AdminService {
     }
 
 
-    public Collection<FormClass.DossierByUserAndYear> getUserFoldersListByYear(Long id,int year) {
+    public Collection<HelperClass.DossierByUserAndYear> getUserFoldersListByYear(Long id, int year) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             return null;
@@ -146,7 +146,7 @@ public class AdminService {
     return function(collection,year);
     }
 
-    public Collection<FormClass.DossierByUserAndYear> getEmpFoldersListByYear(int year,String emp,int available){
+    public Collection<HelperClass.DossierByUserAndYear> getEmpFoldersListByYear(int year, String emp, int available){
         List<Dossier> dossiers=dossierRepository.findByEmployeeUsernameAndAvailable(emp,available);
         return function(dossiers,year);
     }
@@ -199,12 +199,12 @@ public class AdminService {
         return ResponseEntity.ok().body(dossierConverter.entityToDto(result));
     }
 
-    public Collection<FormClass.DossierByUserAndYear> getTotalFoldersByYear(int year){
+    public Collection<HelperClass.DossierByUserAndYear> getTotalFoldersByYear(int year){
         List<Dossier> dossiers=dossierRepository.findAll();
         return function(dossiers,year);
     }
 
-    public ResponseEntity<String> CreateEvent(FormClass.UserEventForm form){
+    public ResponseEntity<String> CreateEvent(HelperClass.UserEventForm form){
         LocalDateTime dateS = LocalDateTime.parse(form.getDateStart());
         LocalDateTime dateE = LocalDateTime.parse(form.getDateEnd());
         if (dateS.isAfter(dateE) ||
@@ -255,8 +255,8 @@ public class AdminService {
         }
 
 
-    public Collection<FormClass.DossierByUserAndYear> function(Collection<Dossier> d ,int year){
-        Collection<FormClass.DossierByUserAndYear> resultlist=new ArrayList<>();
+    public Collection<HelperClass.DossierByUserAndYear> function(Collection<Dossier> d , int year){
+        Collection<HelperClass.DossierByUserAndYear> resultlist=new ArrayList<>();
         List<LocalDateTime> times=new ArrayList<>();
 
         for(Dossier dossier:d){
@@ -275,7 +275,7 @@ public class AdminService {
 
         for ( YearMonth yearMonth : mapYearMonthToLdts.keySet() )
         {
-            FormClass.DossierByUserAndYear result=new FormClass.DossierByUserAndYear();
+            HelperClass.DossierByUserAndYear result=new HelperClass.DossierByUserAndYear();
             result.setMonth(yearMonth.getMonth().toString());
             result.setYear(yearMonth.getYear());
             result.setCount(mapYearMonthToLdts.get( yearMonth ).size());

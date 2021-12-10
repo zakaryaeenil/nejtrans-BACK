@@ -4,7 +4,7 @@ import com.teranil.nejtrans.dao.DossierRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.model.Dossier;
-import com.teranil.nejtrans.model.FormClass.FormClass;
+import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class DossierService {
         return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findAll()));
     }
 
-    public ResponseEntity<String> createDossier(FormClass.DossierForm form) {
+    public ResponseEntity<String> createDossier(HelperClass.DossierForm form) {
         Dossier dossier = new Dossier();
         dossier.setTypeDossier(form.getTypeDossier());
         User user = userRepository.findByUsername(form.getUsername());

@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -38,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/api/auth/login/",
-            "/api/auth/register"
-
+            "/api/auth/register",
+            "/actuator/**"
     };
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;

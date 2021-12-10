@@ -16,5 +16,5 @@ public class DocumentDTO implements Serializable {
     private String name;
     private String Type_Document;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private DossierDTO doc_dossier;
+    private DossierDTO dossier;
 }

@@ -20,7 +20,7 @@ public class Document implements Serializable {
     private String Type_Document;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
-    private Dossier doc_dossier;
+    private Dossier dossier;
 
 }
 

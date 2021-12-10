@@ -1,11 +1,10 @@
 package com.teranil.nejtrans.web;
 
-import com.teranil.nejtrans.model.FormClass.FormClass;
+import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.service.DossierService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +28,7 @@ public class DossierController {
 
     @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
     @PostMapping("/save")
-    public ResponseEntity<String> saveDossier(@RequestBody FormClass.DossierForm form) {
+    public ResponseEntity<String> saveDossier(@RequestBody HelperClass.DossierForm form) {
        return dossierService.createDossier(form);
     }
 
