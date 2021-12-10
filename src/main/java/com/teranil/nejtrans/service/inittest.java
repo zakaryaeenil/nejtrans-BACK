@@ -46,6 +46,7 @@ public class inittest implements CommandLineRunner {
         User u = new User();
         User u2 = new User();
         User u3 = new User();
+
         u.setEmail("Admin1Email@gmail.com");
         u.setUsername("admin1");
         u.setFirstName("Jhonny");
@@ -72,10 +73,10 @@ public class inittest implements CommandLineRunner {
         u3.setTelephone("0606060606");
         u3.getRoles().add(roleRepository.findByName("USER"));
 
+
         userRepository.save(u);
         userRepository.save(u2);
         userRepository.save(u3);
-
     }
 
     public void initDossier() {
