@@ -2,6 +2,7 @@ package com.teranil.nejtrans.web;
 
 
 import com.teranil.nejtrans.model.FormClass.FormClass;
+import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
 import com.teranil.nejtrans.service.AdminService;
@@ -82,9 +83,11 @@ public class AdminController {
         public Collection<FormClass.DossierByUserAndYear> getEmpFoldersByAvailableAndYear(@PathVariable String username,@PathVariable int available,@PathVariable int year){
         return adminService.getEmpFoldersListByYear(year,username,available);
         }
+
+
 @PostMapping("/user/create/role/{id}")
-public void CreateUser(@RequestBody UserDTO userDTO,@PathVariable Long id){
-         adminService.CreateUser(userDTO,id);
+        public void CreateUser(@RequestBody UserDTO user, @PathVariable Long id){
+         adminService.CreateUser(user,id);
 }
 
     @PostMapping("/event/create")

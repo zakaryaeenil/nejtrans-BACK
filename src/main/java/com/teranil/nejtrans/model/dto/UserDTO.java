@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+
 
 @Data
 @AllArgsConstructor
@@ -24,12 +24,12 @@ public class UserDTO implements Serializable {
     private String username;
     private String address;
     private String email;
-    @JsonIgnore
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String telephone;
     private int countDossiers=0;
     private int countReservations=0;
-    
 
     private LocalDateTime createdAt;
     @JsonIgnore

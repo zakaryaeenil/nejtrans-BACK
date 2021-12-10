@@ -38,9 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/api/auth/login/",
-            "/api/auth/register",
-            "api/dossier/**",
-            "api/users/**"
+            "/api/auth/register"
 
     };
     @Autowired

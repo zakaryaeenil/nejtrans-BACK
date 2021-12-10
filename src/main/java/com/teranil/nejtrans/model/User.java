@@ -45,6 +45,7 @@ public class User implements Serializable {
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password should have a minimum of 6 characters")
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @CreationTimestamp
     private LocalDateTime createdAt;
