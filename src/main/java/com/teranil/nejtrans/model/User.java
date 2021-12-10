@@ -28,14 +28,13 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Length(max = 40, message = "First name is too long")
-    @NotEmpty(message = "First Name is required.")
     @Column(name = "FIRST_NAME")
     private String firstName;
     @Length(max = 40, message = "Last name is too long")
-    @NotEmpty(message = "Last name Name is required.")
     @Column(name = "LAST_NAME")
     private String lastName;
     @Column(nullable = false, unique = true)
+
     private String username;
     private String address;
     private String telephone;
