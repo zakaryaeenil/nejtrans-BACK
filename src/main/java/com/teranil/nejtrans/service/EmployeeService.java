@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,5 +63,10 @@ public class EmployeeService {
         } else {
             return ResponseEntity.badRequest().body("Error during reservation !");
         }
+    }
+
+    public ResponseEntity<List<DossierDTO>> getNonReservedFolders(){
+        List<Dossier> dossierList = dossierRepository.findByEmployeeUsername("");
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierList));
     }
 }

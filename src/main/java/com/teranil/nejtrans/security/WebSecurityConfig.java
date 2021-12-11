@@ -80,7 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
         if (user == null) {
             throw new UsernameNotFoundException("Username not found in database !");
         }
+
         Collection<GrantedAuthority> authorities = user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),user.getEnabled(),true,true,true,authorities);
     }
 }

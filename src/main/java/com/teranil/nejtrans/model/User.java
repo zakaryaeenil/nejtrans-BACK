@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,8 +13,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-
-
 
 @Entity
 @Data
@@ -39,6 +36,7 @@ public class User implements Serializable {
     private String telephone;
     private int countDossiers=0;
     private int countReservations=0;
+    private Boolean enabled=true;
     @Column(nullable = false, unique = true)
     private String email;
     @NotBlank(message = "Password is required")
@@ -58,5 +56,7 @@ public class User implements Serializable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "eventUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Event> events = new ArrayList<>();
+
+
 
 }
