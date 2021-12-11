@@ -20,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.teranil.nejtrans.model.Util.HelperClass.EnTraitement;
+import static com.teranil.nejtrans.model.Util.HelperClass.Terminer;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -32,10 +35,33 @@ public class EmployeeService {
     private final MailSenderService mailSender;
 
     //Logged in employee can see his reserved folders list and history
-    public ResponseEntity<List<DossierDTO>> getEmployeeFolders() {
+    public ResponseEntity<List<DossierDTO>> getEmployeeFolders(String type) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
-        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findByEmployeeUsername(LoggedInUser.getUsername())));
+        List<Dossier> dossiersList;
+        switch (type){
+            case "All":
+                dossiersList=dossierRepository.findByEmployeeUsername(LoggedInUser.getUsername());
+                System.out.println(dossiersList.size());
+                System.out.println(LoggedInUser.getUsername());
+                break;
+            case "Import":
+            case "Export":
+                dossiersList=dossierRepository.findByEmployeeUsernameAndTypeDossier(LoggedInUser.getUsername(), type);
+                break;
+            case "Entraitement":
+                dossiersList=dossierRepository.findByEmployeeUsernameAndAvailable(LoggedInUser.getUsername(),EnTraitement);
+                break;
+            case "Terminer":
+                dossiersList=dossierRepository.findByEmployeeUsernameAndAvailable(LoggedInUser.getUsername(),Terminer);
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + type);
+        }
+
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossiersList));
+
     }
 
     //Logged in Employee can reserve an existing folder
@@ -69,4 +95,6 @@ public class EmployeeService {
         List<Dossier> dossierList = dossierRepository.findByEmployeeUsername("");
         return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierList));
     }
+
+
 }

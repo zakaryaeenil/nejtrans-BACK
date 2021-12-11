@@ -20,9 +20,9 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @ApiOperation(value = "Used by Logged in employee to get reserved folders")
-    @GetMapping("/myfolders")
-    public ResponseEntity<List<DossierDTO>> getEmployeeFolders() {
-        return employeeService.getEmployeeFolders();
+    @GetMapping("/myfolders/{type}")
+    public ResponseEntity<List<DossierDTO>> getEmployeeFolders(@PathVariable String type) {
+        return employeeService.getEmployeeFolders(type);
     }
 
     @ApiOperation(value = "Used by Logged in employee to reserve a Folder")
