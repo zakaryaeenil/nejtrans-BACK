@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -29,9 +30,9 @@ public class ClientController {
 
 
     @ApiOperation(value = "Used by Logged in client to get his created Folders list")
-    @GetMapping("/myfolders")
-    public ResponseEntity<List<DossierDTO>> getUserFolders() {
-        return clientService.getUserFolders();
+    @GetMapping("/myfolders/{type}")
+    public ResponseEntity<List<DossierDTO>> getUserFolders(@PathVariable String type) {
+        return clientService.getUserFolders(type);
     }
 
 
