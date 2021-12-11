@@ -71,7 +71,6 @@ public class ClientService {
         switch (type){
             case "All":
                 dossiersList=dossierRepository.findByUserId(LoggedInUser.getId());
-
                 break;
             case "Import":
             case "Export":
