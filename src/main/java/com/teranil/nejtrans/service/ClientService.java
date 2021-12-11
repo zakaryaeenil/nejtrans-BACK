@@ -23,8 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static com.teranil.nejtrans.model.Util.HelperClass.EnTraitement;
-import static com.teranil.nejtrans.model.Util.HelperClass.Terminer;
+import static com.teranil.nejtrans.model.Util.HelperClass.*;
 
 @Service
 @Transactional
@@ -83,6 +82,10 @@ public class ClientService {
                 break;
             case "Terminer":
                 dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),Terminer);
+                break;
+
+            case "Enattente":
+                dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),EnAttente);
                 break;
 
             default:
