@@ -1,20 +1,21 @@
 package com.teranil.nejtrans.service;
 
-import com.teranil.nejtrans.dao.DossierRepository;
-import com.teranil.nejtrans.dao.EventRepository;
-import com.teranil.nejtrans.dao.RoleRepository;
-import com.teranil.nejtrans.dao.UserRepository;
+import com.teranil.nejtrans.dao.*;
 import com.teranil.nejtrans.mapper.DossierConverter;
+import com.teranil.nejtrans.mapper.ToDoConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.Event;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
+import com.teranil.nejtrans.model.dto.ToDoDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,11 +35,20 @@ public class AdminService {
     private final EventRepository eventRepository;
     private final DossierConverter dossierConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ToDoRepository toDoRepository;
+    private final ToDoConverter toDoConverter;
     private final MailSenderService mailSenderService;
 
     public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok().body(userConverter.entityToDto(userRepository.findAll()));
     }
+
+
+
+    public ResponseEntity<List<ToDoDTO>> getAllTodos(){
+        return ResponseEntity.ok().body(toDoConverter.entityToDto(toDoRepository.findAll()));
+    }
+
 
     //Admin can get List of completed folders via employee username
     public ResponseEntity<List<DossierDTO>> getEmployeeCompletedFolders(String empUsername) {

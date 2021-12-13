@@ -1,12 +1,16 @@
 package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DossierRepository;
+import com.teranil.nejtrans.dao.ToDoRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
+import com.teranil.nejtrans.mapper.ToDoConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
+import com.teranil.nejtrans.model.ToDo;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
+import com.teranil.nejtrans.model.dto.ToDoDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -19,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.teranil.nejtrans.model.Util.HelperClass.EnTraitement;
 import static com.teranil.nejtrans.model.Util.HelperClass.Terminer;
@@ -32,6 +37,8 @@ public class EmployeeService {
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
     private final MailSenderService mailSender;
+    private final ToDoRepository toDoRepository;
+    private final ToDoConverter toDoConverter;
 
     //Logged in employee can see his reserved folders list and history
     public ResponseEntity<List<DossierDTO>> getEmployeeFolders(String type) {
@@ -44,6 +51,9 @@ public class EmployeeService {
         return ResponseEntity.ok().body(result.size());
 
     }
+
+
+
 
     private List<DossierDTO> getfolders(String type) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -104,6 +114,10 @@ public class EmployeeService {
         List<Dossier> dossierList = dossierRepository.findByEmployeeUsername("");
         return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierList));
     }
+
+
+
+
 
 
 }

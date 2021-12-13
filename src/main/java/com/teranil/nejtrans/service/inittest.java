@@ -30,6 +30,8 @@ public class inittest implements CommandLineRunner {
 
     private final EventRepository eventRepository;
 
+    private final ToDoRepository toDoRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void initRole() {
@@ -82,6 +84,32 @@ public class inittest implements CommandLineRunner {
         userRepository.save(u3);
     }
 
+
+    public void initToDo(){
+        ToDo t=new ToDo();
+        t.setDescription("Test To do");
+        t.setType("Done");
+        t.setUser(userRepository.getById(3L));
+        t.setTitle("Work");
+
+        ToDo t2=new ToDo();
+        t2.setDescription("Test To do");
+        t2.setType("Trash");
+        t2.setUser(userRepository.getById(2L));
+        t2.setTitle("Workmy");
+
+        ToDo t3=new ToDo();
+        t3.setDescription("Test ihahahTo do");
+        t3.setType("Important");
+        t3.setUser(userRepository.getById(1L));
+        t3.setTitle("test");
+
+        toDoRepository.save(t);
+        toDoRepository.save(t2);
+        toDoRepository.save(t3);
+
+
+    }
     public void initDossier() {
         Dossier d = new Dossier();
         Dossier d2 = new Dossier();
@@ -169,5 +197,6 @@ public class inittest implements CommandLineRunner {
         initEvents();
         initDossier();
         initDocument();
+        initToDo();
     }
 }

@@ -40,7 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "/api/auth/login/",
             "/api/auth/register",
             "/actuator/**",
-            "/api/auth/**"
+            "/api/auth/**",
+            "/",
+            "/toDos/**"
     };
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;

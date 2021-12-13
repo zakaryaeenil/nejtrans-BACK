@@ -2,6 +2,7 @@ package com.teranil.nejtrans.web;
 
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
+import com.teranil.nejtrans.model.dto.ToDoDTO;
 import com.teranil.nejtrans.service.ClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

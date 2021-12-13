@@ -3,6 +3,7 @@ package com.teranil.nejtrans.web;
 
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
+import com.teranil.nejtrans.model.dto.ToDoDTO;
 import com.teranil.nejtrans.model.dto.UserDTO;
 import com.teranil.nejtrans.service.AdminService;
 import io.swagger.annotations.Api;
@@ -40,7 +41,11 @@ public class AdminController {
         return adminService.getFoldersListByYear(type,year);
     }
 
-
+    @ApiOperation(value = "Used by Logged in client to get his to do list")
+    @GetMapping("/todos")
+    public ResponseEntity<List<ToDoDTO>> getAllTodos() {
+        return adminService.getAllTodos();
+    }
 
     @ApiOperation(value = "Used by Admin to get list of folders that a specific employee is working or worked on ")
     @GetMapping("/employee/{username}/folders")

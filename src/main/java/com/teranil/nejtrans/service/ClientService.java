@@ -1,13 +1,16 @@
 package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DossierRepository;
+import com.teranil.nejtrans.dao.ToDoRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
-import com.teranil.nejtrans.mapper.UserConverter;
+import com.teranil.nejtrans.mapper.ToDoConverter;
 import com.teranil.nejtrans.model.Dossier;
+import com.teranil.nejtrans.model.ToDo;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
+import com.teranil.nejtrans.model.dto.ToDoDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -22,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.teranil.nejtrans.model.Util.HelperClass.*;
 
@@ -31,10 +35,11 @@ import static com.teranil.nejtrans.model.Util.HelperClass.*;
 public class ClientService {
 
     private final UserRepository userRepository;
-    private final UserConverter userConverter;
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
     private final MailSenderService mailSender;
+    private final ToDoRepository toDoRepository;
+    private final ToDoConverter toDoConverter;
 
     //Logged in Client can create a folder of documents
     public ResponseEntity<String> createFolder(HelperClass.DossierForm form) {
@@ -102,5 +107,7 @@ public List<DossierDTO> getfolders(String type){
         List<DossierDTO> dossiersList=getfolders(type);
         return ResponseEntity.ok().body(dossiersList.size());
     }
+
+
 
 }
