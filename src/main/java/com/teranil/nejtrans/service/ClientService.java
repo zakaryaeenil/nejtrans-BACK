@@ -63,37 +63,44 @@ public class ClientService {
     }
 
 
-    //Logged in client can get his created folders list
-    public ResponseEntity<List<DossierDTO>> getUserFolders(String type) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
-        List<Dossier> dossiersList;
-        switch (type){
-            case "All":
-                dossiersList=dossierRepository.findByUserId(LoggedInUser.getId());
-                break;
-            case "Import":
-            case "Export":
-                dossiersList=dossierRepository.findByUserIdAndTypeDossier(LoggedInUser.getId(),type);
-                break;
-            case "Entraitement":
-                dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),EnTraitement);
-                break;
-            case "Terminer":
-                dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),Terminer);
-                break;
+public List<DossierDTO> getfolders(String type){
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
+    List<Dossier> dossiersList;
+    switch (type){
+        case "All":
+            dossiersList=dossierRepository.findByUserId(LoggedInUser.getId());
+            break;
+        case "Import":
+        case "Export":
+            dossiersList=dossierRepository.findByUserIdAndTypeDossier(LoggedInUser.getId(),type);
+            break;
+        case "Entraitement":
+            dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),EnTraitement);
+            break;
+        case "Terminer":
+            dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),Terminer);
+            break;
 
-            case "Enattente":
-                dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),EnAttente);
-                break;
+        case "Enattente":
+            dossiersList=dossierRepository.findByUserIdAndAvailable(LoggedInUser.getId(),EnAttente);
+            break;
 
-            default:
-                throw new IllegalStateException("Unexpected value: " + type);
-        }
-
-        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossiersList));
-
+        default:
+            throw new IllegalStateException("Unexpected value: " + type);
     }
 
+    return dossierConverter.entityToDto(dossiersList);
+}
+    //Logged in client can get his created folders list
+    public ResponseEntity<List<DossierDTO>> getUserFolders(String type) {
+        List<DossierDTO> dossiersList=getfolders(type);
+        return ResponseEntity.ok().body(dossiersList);
+    }
+
+    public ResponseEntity<Integer> getUserFoldersCount(String type){
+        List<DossierDTO> dossiersList=getfolders(type);
+        return ResponseEntity.ok().body(dossiersList.size());
+    }
 
 }
