@@ -29,13 +29,23 @@ import static com.teranil.nejtrans.model.Util.HelperClass.Terminer;
 public class EmployeeService {
 
     private final UserRepository userRepository;
-    private final UserConverter userConverter;
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
     private final MailSenderService mailSender;
 
     //Logged in employee can see his reserved folders list and history
     public ResponseEntity<List<DossierDTO>> getEmployeeFolders(String type) {
+        List<DossierDTO> result =getfolders(type);
+        return ResponseEntity.ok().body(result);
+    }
+
+    public ResponseEntity<Integer> getEmployeeFoldersCount(String type) {
+        List<DossierDTO> result =getfolders(type);
+        return ResponseEntity.ok().body(result.size());
+
+    }
+
+    private List<DossierDTO> getfolders(String type) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
         List<Dossier> dossiersList;
@@ -56,12 +66,11 @@ public class EmployeeService {
                 dossiersList=dossierRepository.findByEmployeeUsernameAndAvailable(LoggedInUser.getUsername(),Terminer);
                 break;
 
+
             default:
                 throw new IllegalStateException("Unexpected value: " + type);
         }
-
-        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossiersList));
-
+        return dossierConverter.entityToDto(dossiersList);
     }
 
     //Logged in Employee can reserve an existing folder

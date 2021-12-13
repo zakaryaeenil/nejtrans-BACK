@@ -25,6 +25,13 @@ public class EmployeeController {
         return employeeService.getEmployeeFolders(type);
     }
 
+    @ApiOperation(value = "Used by Logged in employee to get reserved folders")
+    @GetMapping("/myfolders/count/{type}")
+    public ResponseEntity<Integer> getEmployeeFoldersCount(@PathVariable String type) {
+        return employeeService.getEmployeeFoldersCount(type);
+    }
+
+
     @ApiOperation(value = "Used by Logged in employee to reserve a Folder")
     @PatchMapping("/bookfoolder/{id}")
     public ResponseEntity<String> bookFolder(@PathVariable Long id) {
