@@ -17,11 +17,20 @@ public class HelperClass {
         private String typeDossier;
         private String username;
     }
+
     @Data
     public static class DossierByUserAndYear{
         private Integer year;
         private String Month;
         private Integer Count;
+    }
+
+    @Data
+    public static class PasswordResetForm{
+        private String email;
+        private String code;
+        private String newPassword;
+        private String confirmPassword;
     }
 
     @Data

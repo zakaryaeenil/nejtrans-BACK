@@ -34,6 +34,7 @@ public class AdminService {
     private final EventRepository eventRepository;
     private final DossierConverter dossierConverter;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MailSenderService mailSenderService;
 
     public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok().body(userConverter.entityToDto(userRepository.findAll()));
@@ -284,4 +285,8 @@ public class AdminService {
 
         return resultlist;
     }
+
+
+
+
 }

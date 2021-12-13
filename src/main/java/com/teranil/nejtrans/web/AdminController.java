@@ -41,6 +41,7 @@ public class AdminController {
     }
 
 
+
     @ApiOperation(value = "Used by Admin to get list of folders that a specific employee is working or worked on ")
     @GetMapping("/employee/{username}/folders")
     public ResponseEntity<List<DossierDTO>> getEmpFoldersNumber(@PathVariable String username) {

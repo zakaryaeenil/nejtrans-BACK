@@ -39,7 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "/swagger-ui/**",
             "/api/auth/login/",
             "/api/auth/register",
-            "/actuator/**"
+            "/actuator/**",
+            "/api/auth/**"
     };
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
