@@ -24,7 +24,7 @@ public class ToDoService {
     private final ToDoRepository toDoRepository;
     private final ToDoConverter toDoConverter;
     private final UserConverter userConverter;
-    public static List<String> types = Arrays.asList("Important", "Done", "Trash");
+    public static List<String> types = Arrays.asList("Important", "Done", "Trash","Normal");
 
     public List<ToDoDTO> getAllTodos() {
         return toDoConverter.entityToDto(toDoRepository.findAll());
