@@ -89,13 +89,13 @@ public class inittest implements CommandLineRunner {
         ToDo t=new ToDo();
         t.setDescription("Test To do");
         t.setType("Done");
-        t.setUser(userRepository.getById(3L));
+        t.setUser(userRepository.getById(1L));
         t.setTitle("Work");
 
         ToDo t2=new ToDo();
         t2.setDescription("Test To do");
         t2.setType("Trash");
-        t2.setUser(userRepository.getById(2L));
+        t2.setUser(userRepository.getById(1L));
         t2.setTitle("Workmy");
 
         ToDo t3=new ToDo();

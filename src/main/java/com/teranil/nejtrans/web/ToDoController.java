@@ -3,6 +3,7 @@ package com.teranil.nejtrans.web;
 import com.teranil.nejtrans.model.dto.ToDoDTO;
 import com.teranil.nejtrans.service.ToDoService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,11 @@ private final ToDoService toDoService;
     @PostMapping("/create")
     public ResponseEntity<String> CreateTodo(@RequestBody ToDoDTO toDoDTO){
        return toDoService.createTodo(toDoDTO);
+    }
+
+    @PutMapping("/{id}/edit")
+    public ResponseEntity<String> updateTodo(@RequestBody ToDoDTO toDoDTO, @PathVariable Long id){
+        return toDoService.updateTodo(id,toDoDTO);
     }
 
 }

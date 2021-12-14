@@ -1,9 +1,7 @@
 package com.teranil.nejtrans.service;
 
-import com.teranil.nejtrans.dao.DossierRepository;
 import com.teranil.nejtrans.dao.ToDoRepository;
 import com.teranil.nejtrans.dao.UserRepository;
-import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.mapper.ToDoConverter;
 import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.ToDo;
@@ -82,5 +80,21 @@ public class ToDoService {
 
         }
         return ResponseEntity.badRequest().body("please insert correct type");
+    }
+
+    public ResponseEntity<String> updateTodo(Long id,ToDoDTO newtodo){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
+        Collection<ToDo> toDos = LoggedInUser.getToDos();
+        Optional<ToDo> todo = toDoRepository.findById(id);
+        if (todo.isPresent() && toDos.contains(todo.get())){
+            if(Objects.nonNull(newtodo.getTitle()) && !"".equalsIgnoreCase(newtodo.getTitle()))
+            todo.get().setTitle(newtodo.getTitle());
+            if(Objects.nonNull(newtodo.getDescription()) && !"".equalsIgnoreCase(newtodo.getDescription()))
+            todo.get().setDescription(newtodo.getDescription());
+            toDoRepository.flush();
+            return ResponseEntity.ok().body("edited sucesffully");
+        }
+        return ResponseEntity.badRequest().body("Error editing todo!");
     }
 }
