@@ -90,7 +90,7 @@ public class inittest implements CommandLineRunner {
         t.setDescription("Test To do");
         t.setType("Done");
         t.setUser(userRepository.getById(1L));
-        t.setTitle("Work");
+        t.setTitle("Done");
 
         ToDo t4=new ToDo();
         t4.setDescription("Test To do");
@@ -102,13 +102,13 @@ public class inittest implements CommandLineRunner {
         t2.setDescription("Test To do");
         t2.setType("Trash");
         t2.setUser(userRepository.getById(1L));
-        t2.setTitle("Workmy");
+        t2.setTitle("Trash");
 
         ToDo t3=new ToDo();
         t3.setDescription("Test ihahahTo do");
         t3.setType("Important");
         t3.setUser(userRepository.getById(1L));
-        t3.setTitle("test");
+        t3.setTitle("Important");
 
         toDoRepository.save(t);
         toDoRepository.save(t2);
