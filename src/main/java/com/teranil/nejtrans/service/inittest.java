@@ -113,7 +113,7 @@ public class inittest implements CommandLineRunner {
         toDoRepository.save(t);
         toDoRepository.save(t2);
         toDoRepository.save(t3);
-        toDoRepository.save(t3);
+        toDoRepository.save(t4);
 
 
 

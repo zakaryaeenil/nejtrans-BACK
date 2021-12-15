@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.teranil.nejtrans.model.Util.HelperClass.EnTraitement;
 import static com.teranil.nejtrans.model.Util.HelperClass.Terminer;
@@ -37,18 +38,34 @@ public class EmployeeService {
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
     private final MailSenderService mailSender;
-    private final ToDoRepository toDoRepository;
-    private final ToDoConverter toDoConverter;
 
     //Logged in employee can see his reserved folders list and history
     public ResponseEntity<List<DossierDTO>> getEmployeeFolders(String type) {
-        List<DossierDTO> result =getfolders(type);
+        List<DossierDTO> result=getfolders(type);
         return ResponseEntity.ok().body(result);
     }
+
+
+    public ResponseEntity<String> setFolderTerminer(Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
+        List<Dossier> result=dossierRepository.findByEmployeeUsername(LoggedInUser.getUsername());
+        Optional<Dossier> dossier = dossierRepository.findById(id);
+
+        if (dossier.isPresent() && result.contains(dossier.get())  && Objects.equals(dossier.get().getAvailable(),EnTraitement)) {
+            dossier.get().setAvailable(Terminer);
+            dossierRepository.flush();
+            return ResponseEntity.ok().body("Dossier terminé avec success");
+        }
+        return ResponseEntity.badRequest().body("Erreur!");
+
+    }
+
 
     public ResponseEntity<Integer> getEmployeeFoldersCount(String type) {
         List<DossierDTO> result =getfolders(type);
         return ResponseEntity.ok().body(result.size());
+
 
     }
 
@@ -62,8 +79,6 @@ public class EmployeeService {
         switch (type){
             case "All":
                 dossiersList=dossierRepository.findByEmployeeUsername(LoggedInUser.getUsername());
-                System.out.println(dossiersList.size());
-                System.out.println(LoggedInUser.getUsername());
                 break;
             case "Import":
             case "Export":

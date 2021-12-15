@@ -34,6 +34,13 @@ public class EmployeeController {
 
 
 
+    @ApiOperation(value = "Used by Logged in employee to set  a folder as completed")
+    @PatchMapping("/terminer/{id}")
+    public ResponseEntity<String> completedFolder(@PathVariable Long id) {
+        return employeeService.setFolderTerminer(id);
+    }
+
+
     @ApiOperation(value = "Used by Logged in employee to reserve a Folder")
     @PatchMapping("/bookfoolder/{id}")
     public ResponseEntity<String> bookFolder(@PathVariable Long id) {
