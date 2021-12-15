@@ -2,6 +2,7 @@ package com.teranil.nejtrans.web;
 
 import com.teranil.nejtrans.service.DocumentService;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,8 +24,14 @@ public class DocumentController {
         return documentService.uploadFiles(id, multipartFileList);
     }
 
-    @GetMapping("/{id}/download")
+    @GetMapping("/{id}/downloadDB")
     public ResponseEntity<String> downloadDocument(@PathVariable Long id, HttpServletResponse response) throws Exception {
-         return documentService.downloadFile(id, response);
+         return documentService.downloadFileFromDB(id, response);
     }
+
+    @GetMapping("/{id}/download")
+    public ResponseEntity<Resource> downloadDocumentSrv(@PathVariable Long id, HttpServletResponse response) throws Exception {
+        return documentService.downloadFileFromServer(id);
+    }
+
 }
