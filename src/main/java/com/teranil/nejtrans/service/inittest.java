@@ -10,6 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 
 import static com.teranil.nejtrans.model.Util.HelperClass.*;
@@ -33,6 +36,8 @@ public class inittest implements CommandLineRunner {
     private final ToDoRepository toDoRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
 
     public void initRole() {
         Role R = new Role();
@@ -154,23 +159,31 @@ public class inittest implements CommandLineRunner {
 
     }
 
-    public void initDocument() {
+    public void initDocument() throws IOException {
         Document doc = new Document();
         Document doc2 = new Document();
         Document doc3 = new Document();
+        Document document=new Document();
+        File file=new File("C:\\Users\\AGMAR\\Downloads\\Mini-Projet-SpringBOOT.pdf");
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        document.setName(file.getName());
+        document.setContent(bytes);
+        document.setDossier(dossierRepository.getById(3L));
+        document.setTypeDocument("Acte naissance");
+        document.getDossier().setNb_documents(document.getDossier().getNb_documents()+1);
 
         doc.setName("Doc1");
-        doc.setType_Document("CV");
+        doc.setTypeDocument("CV");
         doc.setDossier(dossierRepository.getById(1L));
         doc.getDossier().setNb_documents(doc.getDossier().getNb_documents() + 1);
 
         doc2.setName("Doc2");
-        doc2.setType_Document("Lettre motivation");
+        doc2.setTypeDocument("Lettre motivation");
         doc2.setDossier(dossierRepository.getById(2L));
         doc2.getDossier().setNb_documents(doc2.getDossier().getNb_documents() + 1);
 
         doc3.setName("Doc3");
-        doc3.setType_Document("Acte naissance");
+        doc3.setTypeDocument("Acte naissance");
         doc3.setDossier(dossierRepository.getById(1L));
         doc3.getDossier().setNb_documents(doc3.getDossier().getNb_documents() + 1);
 
@@ -178,6 +191,7 @@ public class inittest implements CommandLineRunner {
         documentRepository.save(doc);
         documentRepository.save(doc2);
         documentRepository.save(doc3);
+        documentRepository.save(document);
     }
 
     public void initEvents(){

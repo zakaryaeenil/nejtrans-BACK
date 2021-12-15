@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,7 +16,10 @@ import java.io.Serializable;
 public class DocumentDTO implements Serializable {
     private Long id;
     private String name;
-    private String Type_Document;
+    private String typeDocument;
+    private LocalDateTime uploadDate;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private byte[] content;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DossierDTO dossier;
 }
