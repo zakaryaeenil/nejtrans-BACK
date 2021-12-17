@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.teranil.nejtrans.model.Util.HelperClass.EnTraitement;
-import static com.teranil.nejtrans.model.Util.HelperClass.Terminer;
+import static com.teranil.nejtrans.model.Util.HelperClass.*;
 
 @Service
 @Transactional
@@ -44,6 +43,8 @@ public class EmployeeService {
         List<DossierDTO> result=getfolders(type);
         return ResponseEntity.ok().body(result);
     }
+
+
 
 
     public ResponseEntity<String> setFolderTerminer(Long id){
@@ -68,6 +69,7 @@ public class EmployeeService {
 
 
     }
+
 
 
 
@@ -123,6 +125,21 @@ public class EmployeeService {
         } else {
             return ResponseEntity.badRequest().body("Error during reservation !");
         }
+    }
+
+    public ResponseEntity<String> unreserveFolder(Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
+        Dossier dossier = dossierRepository.getById(id);
+        List<Dossier> dossierList = dossierRepository.findByEmployeeUsername(LoggedInUser.getUsername());
+        if (dossierList.contains(dossier) && Objects.equals(dossier.getAvailable(), EnTraitement)) {
+            dossier.setAvailable(EnAttente);
+            dossier.setEmployeeUsername("");
+            dossierRepository.flush();
+            return ResponseEntity.ok().body("Dossier désaboné avec success");
+        }
+        return ResponseEntity.badRequest().body("Erreur lors de desabonnement");
+
     }
 
     public ResponseEntity<List<DossierDTO>> getNonReservedFolders(){

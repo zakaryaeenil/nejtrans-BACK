@@ -164,7 +164,7 @@ public class inittest implements CommandLineRunner {
         Document doc2 = new Document();
         Document doc3 = new Document();
         Document document=new Document();
-        File file=new File("C:\\Users\\AGMAR\\Downloads\\Mini-Projet-SpringBOOT.pdf");
+        File file=new File("C:\\Users\\x1 YoGa\\Downloads\\JPA-TP3_4-Mapping-OneToMany.pdf");
         byte[] bytes = Files.readAllBytes(file.toPath());
         document.setName(file.getName());
         document.setContent(bytes);

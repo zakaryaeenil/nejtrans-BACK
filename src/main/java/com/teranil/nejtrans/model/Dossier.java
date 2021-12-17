@@ -27,6 +27,7 @@ public class Dossier implements Serializable {
     private Integer available = EnAttente;
     private String employeeUsername = "";
     private String etat;
+    private String operation;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "dossier", cascade = CascadeType.ALL, orphanRemoval = true)

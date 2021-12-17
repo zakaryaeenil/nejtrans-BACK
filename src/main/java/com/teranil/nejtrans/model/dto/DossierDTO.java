@@ -20,8 +20,9 @@ public class DossierDTO implements Serializable {
     private String typeDossier;
     private Integer nb_documents = 0;
     private Integer available = EnAttente;
-    private String employeeUsername;
+    private String employeeUsername="";
     private String etat;
+    private String operation;
     private LocalDateTime createdAt;
     private Collection<DocumentDTO> documents = new ArrayList<>();
     private UserDTO user;

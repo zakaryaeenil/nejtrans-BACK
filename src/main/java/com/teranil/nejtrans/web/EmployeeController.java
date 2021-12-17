@@ -47,6 +47,12 @@ public class EmployeeController {
         return employeeService.bookFolder(id);
     }
 
+    @ApiOperation(value = "Used by Logged in employee to unreserved a Folder")
+    @PatchMapping("/unbookfoolder/{id}")
+    public ResponseEntity<String> unbookFolder(@PathVariable Long id) {
+        return employeeService.unreserveFolder(id);
+    }
+
     @ApiOperation(value = "Used by Logged in employee to get reserved folders")
     @GetMapping("/freefolders")
     public ResponseEntity<List<DossierDTO>> getFreeFolders() {
