@@ -74,6 +74,7 @@ public class ToDoService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
         toDoDTO.setUser(userConverter.entityToDto(LoggedInUser));
+        toDoDTO.setType("Normal");
         if (types.contains(toDoDTO.getType())) {
             toDoRepository.save(toDoConverter.dtoToEntity(toDoDTO));
             return ResponseEntity.ok().body("saved successfully");

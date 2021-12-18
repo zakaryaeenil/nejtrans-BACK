@@ -24,7 +24,7 @@ public class HelperClass {
     public static class DossierByUserAndYear{
         private Integer year;
         private String Month;
-        private Integer Count;
+        private Integer Count ;
     }
 
     @Data

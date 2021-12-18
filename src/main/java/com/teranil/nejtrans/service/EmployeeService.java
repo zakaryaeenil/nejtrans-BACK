@@ -110,6 +110,7 @@ public class EmployeeService {
         List<Dossier> dossierList = dossierRepository.findByEmployeeUsername("");
         if (dossierList.contains(dossier) && dossier.getAvailable() == 1) {
             dossier.setEmployeeUsername(LoggedInUser.getUsername());
+            dossier.setAvailable(2);
             dossierRepository.save(dossier);
             List<User> users=userRepository.findByRoles_Id(1L);
             String body="employee"+dossier.getEmployeeUsername()+" has reserved folder "+dossier.getId()+"Type : "+dossier.getTypeDossier()+" at "+ LocalDateTime.now()

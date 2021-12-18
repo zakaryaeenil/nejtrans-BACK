@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final PasswordResetService passwordResetService;
-    @PatchMapping("/resetpassword/{email}")
+    @PutMapping("/resetpassword/{email}")
     public ResponseEntity<String> resetPassword(@PathVariable String email){
         return passwordResetService.resetPassword(email);
     }

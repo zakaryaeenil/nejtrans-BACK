@@ -10,7 +10,9 @@ public class Config implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(
-                        "http://localhost:4200"
+                        "http://localhost:4200",
+                        "http://localhost:8081"
+
                 )
                 .allowedMethods(
                         "GET",
