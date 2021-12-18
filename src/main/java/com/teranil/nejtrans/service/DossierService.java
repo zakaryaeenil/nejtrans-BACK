@@ -40,6 +40,7 @@ public class DossierService {
             return ResponseEntity.badRequest().body("Error while creating folder");
         }
         dossier.setUser(user);
+        dossier.setOperation(form.getOperation());
         dossierRepository.save(dossier);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/dossier/save").toUriString());
         return ResponseEntity.created(uri).body("Created successfully");

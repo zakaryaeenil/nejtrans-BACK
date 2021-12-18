@@ -15,6 +15,7 @@ public class HelperClass {
     @Data
     public static class DossierForm {
         private String typeDossier;
+        private String operation;
         private String username;
     }
 

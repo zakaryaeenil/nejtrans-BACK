@@ -134,6 +134,7 @@ public class inittest implements CommandLineRunner {
         User user2 =userRepository.findByUsername(d.getEmployeeUsername());
         user2.setCountReservations(user2.getCountReservations()+1);
         d.setUser(userRepository.getById(3L));
+        d.setOperation("Operation urgente");
         d.getUser().setCountDossiers(d.getUser().getCountDossiers()+1);
 
 
@@ -143,6 +144,8 @@ public class inittest implements CommandLineRunner {
         User user =userRepository.findByUsername(d2.getEmployeeUsername());
         user.setCountReservations(user.getCountReservations()+1);
         d2.setUser(userRepository.getById(3L));
+        d2.setOperation("Operation normale");
+
         d2.getUser().setCountDossiers(d2.getUser().getCountDossiers()+1);
 
 
@@ -150,6 +153,7 @@ public class inittest implements CommandLineRunner {
         d3.setAvailable(EnAttente);
         d3.setTypeDossier("Export");
         d3.setUser(userRepository.getById(3L));
+        d3.setOperation("Travail rénumeré");
         d3.getUser().setCountDossiers(d3.getUser().getCountDossiers()+1);
 
 
@@ -163,14 +167,7 @@ public class inittest implements CommandLineRunner {
         Document doc = new Document();
         Document doc2 = new Document();
         Document doc3 = new Document();
-        Document document=new Document();
-        File file=new File("C:\\Users\\x1 YoGa\\Downloads\\JPA-TP3_4-Mapping-OneToMany.pdf");
-        byte[] bytes = Files.readAllBytes(file.toPath());
-        document.setName(file.getName());
-        document.setContent(bytes);
-        document.setDossier(dossierRepository.getById(3L));
-        document.setTypeDocument("Acte naissance");
-        document.getDossier().setNb_documents(document.getDossier().getNb_documents()+1);
+
 
         doc.setName("Doc1");
         doc.setTypeDocument("CV");
@@ -191,7 +188,7 @@ public class inittest implements CommandLineRunner {
         documentRepository.save(doc);
         documentRepository.save(doc2);
         documentRepository.save(doc3);
-        documentRepository.save(document);
+
     }
 
     public void initEvents(){

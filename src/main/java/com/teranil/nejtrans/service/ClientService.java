@@ -51,6 +51,7 @@ public class ClientService {
         Dossier dossier = new Dossier();
         dossier.setTypeDossier(form.getTypeDossier());
         dossier.setUser(LoggedInUser);
+        dossier.setOperation(form.getOperation());
         LoggedInUser.setCountDossiers(LoggedInUser.getCountDossiers()+1);
         dossierRepository.save(dossier);
         List<User> users=userRepository.findByRoles_Id(1L);
