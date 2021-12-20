@@ -45,19 +45,21 @@ public class DocumentService {
     private final DossierRepository dossierRepository;
     public static final String DIRECTORY = System.getProperty("user.home") + "/Downloads";
 
-    public ResponseEntity<String> uploadFiles(Long id, MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<String> uploadFiles(Long id, List<MultipartFile> multipartFile) throws IOException {
         Dossier dossier = dossierRepository.getById(id);
-            String filename = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        for (MultipartFile file : multipartFile) {
+            String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             Path path = get(DIRECTORY, filename).toAbsolutePath().normalize();
             Document document = new Document();
             document.setDossier(dossier);
             document.setTypeDocument("Test ajout document");
             document.setName(filename);
-            document.setContent(multipartFile.getBytes());
+            document.setContent(file.getBytes());
             document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
-            copy(multipartFile.getInputStream(), path, REPLACE_EXISTING);
+            copy(file.getInputStream(), path, REPLACE_EXISTING);
             documentRepository.save(document);
 
+        }
         return ResponseEntity.ok().body("Test");
     }
 

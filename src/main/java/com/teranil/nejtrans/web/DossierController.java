@@ -8,7 +8,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -28,15 +30,18 @@ public class DossierController {
 
     @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
     @PostMapping("/save")
-    public ResponseEntity<String> saveDossier(@RequestBody HelperClass.DossierForm form) {
-       return dossierService.createDossier(form);
+    public ResponseEntity<String> saveDossier(@RequestPart HelperClass.DossierForm form,@RequestPart("document") List<MultipartFile> multipartFile) throws IOException {
+       return dossierService.createDossier(form,multipartFile);
     }
+
 
     @ApiOperation(value = "Used by Admin to delete a folder by its id")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDossier(@PathVariable Long id) {
         return dossierService.delete(id);
     }
+
+
 
 
 }

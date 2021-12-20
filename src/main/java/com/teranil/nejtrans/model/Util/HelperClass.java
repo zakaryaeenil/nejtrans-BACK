@@ -17,6 +17,7 @@ public class HelperClass {
         private String typeDossier;
         private String operation;
         private String username;
+
     }
 
     @Data

@@ -20,7 +20,7 @@ public class DocumentController {
     private final DocumentService documentService;
 
      @PostMapping("/{id}/upload")
-    public ResponseEntity<String> uploadDocument(@PathVariable Long id, @RequestParam("document") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<String> uploadDocument(@PathVariable Long id, @RequestParam("document") List<MultipartFile> multipartFile) throws IOException {
         return documentService.uploadFiles(id, multipartFile);
     }
 
