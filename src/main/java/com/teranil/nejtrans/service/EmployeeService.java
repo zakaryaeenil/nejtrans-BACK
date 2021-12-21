@@ -1,16 +1,13 @@
 package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DossierRepository;
-import com.teranil.nejtrans.dao.ToDoRepository;
+import com.teranil.nejtrans.dao.NotificationRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
-import com.teranil.nejtrans.mapper.ToDoConverter;
-import com.teranil.nejtrans.mapper.UserConverter;
 import com.teranil.nejtrans.model.Dossier;
-import com.teranil.nejtrans.model.ToDo;
+import com.teranil.nejtrans.model.Notification;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
-import com.teranil.nejtrans.model.dto.ToDoDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -21,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,6 +34,8 @@ public class EmployeeService {
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
     private final MailSenderService mailSender;
+    private final NotificationRepository notificationRepository;
+
 
     //Logged in employee can see his reserved folders list and history
     public ResponseEntity<List<DossierDTO>> getEmployeeFolders(String type) {
@@ -56,6 +55,9 @@ public class EmployeeService {
         if (dossier.isPresent() && result.contains(dossier.get())  && Objects.equals(dossier.get().getAvailable(),EnTraitement)) {
             dossier.get().setAvailable(Terminer);
             dossierRepository.flush();
+            Notification notification=new Notification();
+            notification.setDescription("Employee "+LoggedInUser.getUsername()+" has finished folder "+dossier.get().getId());
+            notificationRepository.save(notification);
             return ResponseEntity.ok().body("Dossier terminé avec success");
         }
         return ResponseEntity.badRequest().body("Erreur!");
@@ -119,7 +121,9 @@ public class EmployeeService {
                     mailException.printStackTrace();
                 }
             }
-
+            Notification notification=new Notification();
+            notification.setDescription("Employee "+LoggedInUser.getUsername()+" reserved folder "+dossier.getId());
+            notificationRepository.save(notification);
             LoggedInUser.setCountReservations(LoggedInUser.getCountReservations()+1);
             return ResponseEntity.ok().body("booked successfully ");
         } else {
@@ -135,6 +139,9 @@ public class EmployeeService {
         if (dossierList.contains(dossier) && Objects.equals(dossier.getAvailable(), EnTraitement)) {
             dossier.setAvailable(EnAttente);
             dossier.setEmployeeUsername("");
+            Notification notification=new Notification();
+            notification.setDescription("Employee "+LoggedInUser.getUsername()+" unsubscribed from folder "+dossier.getId());
+            notificationRepository.save(notification);
             dossierRepository.flush();
             return ResponseEntity.ok().body("Dossier désaboné avec success");
         }

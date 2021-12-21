@@ -2,6 +2,7 @@ package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DocumentRepository;
 import com.teranil.nejtrans.dao.DossierRepository;
+import com.teranil.nejtrans.dao.NotificationRepository;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.model.Document;
@@ -29,7 +30,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.nio.file.Files.copy;
-import static java.nio.file.Paths.get;
+
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
