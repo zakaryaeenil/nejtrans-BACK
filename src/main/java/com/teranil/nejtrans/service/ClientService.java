@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+
 
 import static com.teranil.nejtrans.model.Util.HelperClass.*;
 
@@ -37,36 +37,8 @@ public class ClientService {
     private final UserRepository userRepository;
     private final DossierRepository dossierRepository;
     private final DossierConverter dossierConverter;
-    private final MailSenderService mailSender;
-    private final ToDoRepository toDoRepository;
-    private final ToDoConverter toDoConverter;
 
-    //Logged in Client can create a folder of documents
-    public ResponseEntity<String> createFolder(HelperClass.DossierForm form) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
-        if (Objects.isNull(LoggedInUser) && (Objects.isNull(form))) {
-            return ResponseEntity.badRequest().body("Please insert Type,or login");
-        }
-        Dossier dossier = new Dossier();
-        dossier.setTypeDossier(form.getTypeDossier());
-        dossier.setUser(LoggedInUser);
-        dossier.setOperation(form.getOperation());
-        LoggedInUser.setCountDossiers(LoggedInUser.getCountDossiers()+1);
-        dossierRepository.save(dossier);
-        List<User> users=userRepository.findByRoles_Id(1L);
-        String body="User "+dossier.getUser().getUsername()+" has created folder "+dossier.getId()+" "+dossier.getTypeDossier()+" at "+dossier.getCreatedAt()
-                .format(DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm"));
-        for (User user : users) {
-            try {
-                mailSender.SendEmail(user.getEmail(),"New folder has been created!",body);
-            } catch (MailException mailException) {
-                mailException.printStackTrace();
-            }
-        }
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/client/createfoler").toUriString());
-        return ResponseEntity.created(uri).body("Dossier created succesfully");
-    }
+
 
 
 public List<DossierDTO> getfolders(String type){

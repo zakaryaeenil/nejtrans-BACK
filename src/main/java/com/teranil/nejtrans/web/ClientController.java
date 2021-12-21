@@ -23,11 +23,6 @@ public class ClientController {
     public final ClientService clientService;
 
 
-    @ApiOperation(value = "Used by Logged in client to creater a Folder")
-    @PostMapping("/createfolder")
-    public ResponseEntity<String> createFolder(@RequestBody HelperClass.DossierForm form) {
-        return clientService.createFolder(form);
-    }
 
 
     @ApiOperation(value = "Used by Logged in client to get his created Folders list")

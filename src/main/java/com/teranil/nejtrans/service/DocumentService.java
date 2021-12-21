@@ -28,6 +28,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -83,6 +84,7 @@ public class DocumentService {
         Optional<Document> document = documentRepository.findById(id);
         if (document.isPresent()) {
             Path filepath = get(DIRECTORY).toAbsolutePath().normalize().resolve(document.get().getName());
+            
             if (!Files.exists(filepath)) {
                 return ResponseEntity.badRequest().build();
             }

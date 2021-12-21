@@ -11,15 +11,19 @@ import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,30 +49,46 @@ public class DossierService {
     }
 
     public ResponseEntity<String> createDossier(HelperClass.DossierForm form, List<MultipartFile> multipartFile) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
         Dossier dossier = new Dossier();
-        dossier.setTypeDossier(form.getTypeDossier());
-        User user = userRepository.findByUsername(form.getUsername());
-        if (Objects.isNull(user)) {
-            return ResponseEntity.badRequest().body("Error while creating folder");
+        if(Objects.equals(form.getUsername(), "")){
+            dossier.setUser(LoggedInUser);
         }
-        dossier.setUser(user);
+        else {
+            User user = userRepository.findByUsername(form.getUsername());
+            if (Objects.isNull(user)) {
+                return ResponseEntity.badRequest().body("Error username not found !");
+            }
+            dossier.setUser(user);
+        }
+        dossier.setTypeDossier(form.getTypeDossier());
         dossier.setOperation(form.getOperation());
         dossierRepository.save(dossier);
 
         for (MultipartFile file : multipartFile) {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            Path path = get(DIRECTORY, filename).toAbsolutePath().normalize();
-            Document document = new Document();
-            document.setDossier(dossier);
-            document.setTypeDocument(file.getContentType());
-            document.setName(filename);
-            document.setContent(file.getBytes());
-            document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
-            copy(file.getInputStream(), path, REPLACE_EXISTING);
-            documentRepository.save(document);
+            File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+" "+dossier.getUser().getUsername());
+            if(folder.mkdir()){
+                System.out.println("dossier created");
+            }
+            else{
+                System.out.println("error creating folder");
+            }
+            {
+                Path path = Paths.get(String.valueOf(folder), filename).toAbsolutePath().normalize();
+                Document document = new Document();
+                document.setDossier(dossier);
+                document.setTypeDocument(file.getContentType());
+                document.setName(filename);
+                document.setContent(file.getBytes());
+                document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
+                copy(file.getInputStream(), path, REPLACE_EXISTING);
+                documentRepository.save(document);
+
+            }
 
         }
-
 
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/dossier/save").toUriString());
         return ResponseEntity.created(uri).body("Created successfully");
