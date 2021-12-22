@@ -58,7 +58,7 @@ public class DossierService {
         Notification notification = new Notification();
         if(Objects.equals(form.getUsername(), "")){
             dossier.setUser(LoggedInUser);
-            notification.setDescription(LoggedInUser.getUsername()+" has created folder "+ dossier.getId());
+
         }
         else {
             User user = userRepository.findByUsername(form.getUsername());
@@ -66,12 +66,11 @@ public class DossierService {
                 return ResponseEntity.badRequest().body("Error username not found !");
             }
             dossier.setUser(user);
-            notification.setDescription(user.getUsername()+" has created folder "+ dossier.getId());
-
         }
         dossier.setTypeDossier(form.getTypeDossier());
         dossier.setOperation(form.getOperation());
         dossierRepository.save(dossier);
+        notification.setDescription(dossier.getUser().getUsername()+" has created folder "+ dossier.getId());
         notificationRepository.save(notification);
 
         for (MultipartFile file : multipartFile) {
