@@ -7,6 +7,7 @@ import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.mapper.DossierConverter;
 import com.teranil.nejtrans.model.Document;
 import com.teranil.nejtrans.model.Dossier;
+import com.teranil.nejtrans.model.Notification;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
@@ -42,6 +43,7 @@ public class DossierService {
     private final UserRepository userRepository;
     private final DossierConverter dossierConverter;
     private final DocumentRepository documentRepository;
+    private final NotificationRepository notificationRepository;
     public static final String DIRECTORY = System.getProperty("user.home") + "/Downloads/uploads";
 
 
@@ -53,8 +55,10 @@ public class DossierService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
         Dossier dossier = new Dossier();
+        Notification notification = new Notification();
         if(Objects.equals(form.getUsername(), "")){
             dossier.setUser(LoggedInUser);
+            notification.setDescription(LoggedInUser.getUsername()+" has created folder "+ dossier.getId());
         }
         else {
             User user = userRepository.findByUsername(form.getUsername());
@@ -62,10 +66,13 @@ public class DossierService {
                 return ResponseEntity.badRequest().body("Error username not found !");
             }
             dossier.setUser(user);
+            notification.setDescription(user.getUsername()+" has created folder "+ dossier.getId());
+
         }
         dossier.setTypeDossier(form.getTypeDossier());
         dossier.setOperation(form.getOperation());
         dossierRepository.save(dossier);
+        notificationRepository.save(notification);
 
         for (MultipartFile file : multipartFile) {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));

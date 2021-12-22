@@ -2,6 +2,7 @@ package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.NotificationRepository;
 import com.teranil.nejtrans.mapper.NotificationConverter;
+import com.teranil.nejtrans.model.Notification;
 import com.teranil.nejtrans.model.dto.NotificationDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,12 @@ public class NotificationService {
         });
         notificationRepository.flush();
         return notificationConverter.entityToDto(notificationRepository.findAll());
+    }
+
+    public void setRead(Long id){
+         Notification notification=notificationRepository.getById(id);
+         notification.setRead(true);
+         notificationRepository.flush();
     }
 
 }

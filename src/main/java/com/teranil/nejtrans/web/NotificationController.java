@@ -3,10 +3,7 @@ package com.teranil.nejtrans.web;
 import com.teranil.nejtrans.model.dto.NotificationDTO;
 import com.teranil.nejtrans.service.NotificationService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +18,10 @@ public class NotificationController {
     @GetMapping("/all")
     public List<NotificationDTO> getAll(){
         return notificationService.getAllNotifications();
+    }
+
+    @PutMapping("/{id}/read")
+    public void setRead(Long id){
+        notificationService.setRead(id);
     }
 }
