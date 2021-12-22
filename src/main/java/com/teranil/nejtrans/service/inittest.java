@@ -213,9 +213,12 @@ public class inittest implements CommandLineRunner {
     public void run(String... args) throws Exception {
         initRole();
         initUser();
+        int i=0;
+        while(i<100){
         initEvents();
         initDossier();
         initDocument();
         initToDo();
-    }
+        i++;
+    }}
 }
