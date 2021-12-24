@@ -74,6 +74,15 @@ public class inittest implements CommandLineRunner {
         u2.setTelephone("0606060606");
         u2.getRoles().add(roleRepository.findByName("EMPLOYEE"));
 
+        User u4=new User();
+
+        u4.setEmail("employssseeEmail@gmail.com");
+        u4.setUsername("employee2");
+        u4.setFirstName("zaki");
+        u4.setPassword(bCryptPasswordEncoder.encode("password"));
+        u4.setLastName("hehe");
+        u4.setTelephone("0606060606");
+        u4.getRoles().add(roleRepository.findByName("EMPLOYEE"));
 
         u3.setEmail("User2Email@gmail.com");
         u3.setUsername("user3");
@@ -83,10 +92,21 @@ public class inittest implements CommandLineRunner {
         u3.setTelephone("0606060606");
         u3.getRoles().add(roleRepository.findByName("USER"));
 
+        User u5 = new User();
+
+        u5.setEmail("User4Email@gmail.com");
+        u5.setUsername("user4");
+        u5.setFirstName("Alami");
+        u5.setPassword(bCryptPasswordEncoder.encode("password"));
+        u5.setLastName("Mohamed");
+        u5.setTelephone("0606060606");
+        u5.getRoles().add(roleRepository.findByName("USER"));
 
         userRepository.save(u);
         userRepository.save(u2);
         userRepository.save(u3);
+        userRepository.save(u4);
+        userRepository.save(u5);
     }
 
 

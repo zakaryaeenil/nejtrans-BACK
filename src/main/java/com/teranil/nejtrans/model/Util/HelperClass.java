@@ -3,6 +3,9 @@ package com.teranil.nejtrans.model.Util;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class HelperClass {
 
@@ -17,6 +20,21 @@ public class HelperClass {
         public Integer countImport=0;
         public Integer countExport=0;
         public Integer countTotal=0;
+    }
+
+    @Data
+    @NoArgsConstructor
+    public static class RapportHelperEmployee{
+        public String month;
+        public List<data> data=new ArrayList<>();
+    }
+
+    @Data
+    public static class data{
+        public Integer countImport=0;
+        public Integer countExport=0;
+        public Integer countTotal=0;
+        public String username="";
     }
 
     @Data

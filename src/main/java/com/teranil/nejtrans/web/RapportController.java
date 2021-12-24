@@ -45,7 +45,19 @@ public class RapportController {
 
     @GetMapping("/getmonths/{year}")
     public ResponseEntity<List<HelperClass.RapportHelper>> getRapportcount(@PathVariable int year){
-        return rapportService.getAvg(year);
+        return rapportService.getEntreprise(year);
     }
+
+    @GetMapping("/getmonthsAgents")
+    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getRapportcountForEmployee(){
+        return rapportService.getEmployee();
+    }
+
+    @GetMapping("/getmonthsClients")
+    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getRapportcountForClients(){
+        return rapportService.getClient();
+    }
+
+
 
 }

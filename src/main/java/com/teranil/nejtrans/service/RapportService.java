@@ -1,7 +1,9 @@
 package com.teranil.nejtrans.service;
 
 import com.teranil.nejtrans.dao.DossierRepository;
+import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.model.Dossier;
+import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +18,12 @@ import java.util.*;
 @AllArgsConstructor
 public class RapportService {
     private final DossierRepository dossierRepository;
+    private final UserRepository userRepository;
     public static List<String> months = Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER");
 
 
 
-    public ResponseEntity<List<HelperClass.RapportHelper>> getAvg(int year){
+    public ResponseEntity<List<HelperClass.RapportHelper>> getEntreprise(int year){
         List<Dossier> dossiers=dossierRepository.findAll();
         List<HelperClass.RapportHelper> rapport=new ArrayList<>();
         int i=0;
@@ -48,6 +51,75 @@ public class RapportService {
 
         return ResponseEntity.ok().body(rapport);
     }
+
+    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getEmployee(){
+        List<HelperClass.RapportHelperEmployee> rapport=new ArrayList<>();
+        List<User> users=userRepository.findByRoles_Id(2L);
+        int i=0;
+        for(String month : months){
+            HelperClass.RapportHelperEmployee rapportmonth= new HelperClass.RapportHelperEmployee();
+            rapportmonth.setMonth(month);
+            for(User user:users) {
+                HelperClass.data Data=new HelperClass.data();
+
+                for(Dossier dossier:dossierRepository.findByEmployeeUsername(user.getUsername())) {
+                    if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                        if (Objects.equals(dossier.getTypeDossier(), "Import")) {
+                            i++;
+                            Data.setCountImport(Data.getCountImport() + 1);
+                        } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                            i++;
+                            Data.setCountExport(Data.getCountExport() + 1);
+                        }
+                        Data.setCountTotal(i);
+                    }
+                }
+                Data.setUsername(user.getUsername());
+                rapportmonth.getData().add(Data);
+
+            }
+            rapport.add(rapportmonth);
+
+        }
+
+
+        return ResponseEntity.ok().body(rapport);
+    }
+
+    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getClient(){
+        List<HelperClass.RapportHelperEmployee> rapport=new ArrayList<>();
+        List<User> users=userRepository.findByRoles_Id(3L);
+        int i=0;
+        for(String month : months){
+            HelperClass.RapportHelperEmployee rapportmonth= new HelperClass.RapportHelperEmployee();
+            rapportmonth.setMonth(month);
+            for(User user:users) {
+                HelperClass.data Data=new HelperClass.data();
+                for(Dossier dossier:user.getDossier()) {
+                    if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                        if (Objects.equals(dossier.getTypeDossier(), "Import")) {
+                            i++;
+                            Data.setCountImport(Data.getCountImport() + 1);
+                        } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                            i++;
+                            Data.setCountExport(Data.getCountExport() + 1);
+                        }
+                        Data.setCountTotal(i);
+                    }
+                }
+                Data.setUsername(user.getUsername());
+                rapportmonth.getData().add(Data);
+
+            }
+            rapport.add(rapportmonth);
+
+        }
+
+
+        return ResponseEntity.ok().body(rapport);
+    }
+
+
 
     public HelperClass.CounterClass getAverageFoldersMounth() {
 
