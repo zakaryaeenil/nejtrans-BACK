@@ -21,7 +21,7 @@ public class NotificationController {
     }
 
     @PutMapping("/{id}/read")
-    public void setRead(Long id){
+    public void setRead(@PathVariable Long id){
         notificationService.setRead(id);
     }
 }

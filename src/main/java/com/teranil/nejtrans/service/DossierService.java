@@ -44,7 +44,7 @@ public class DossierService {
     private final DossierConverter dossierConverter;
     private final DocumentRepository documentRepository;
     private final NotificationRepository notificationRepository;
-    public static final String DIRECTORY = System.getProperty("user.home") + "/Downloads/uploads";
+    public static final String DIRECTORY = System.getProperty("user.home") + "/Documents/uploads";
 
 
     public ResponseEntity<List<DossierDTO>> getAll() {
@@ -75,7 +75,7 @@ public class DossierService {
 
         for (MultipartFile file : multipartFile) {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+" "+dossier.getUser().getUsername());
+            File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
             if(folder.mkdir()){
                 System.out.println("dossier created");
             }

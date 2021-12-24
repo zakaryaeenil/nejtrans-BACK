@@ -44,7 +44,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class DocumentService {
     private final DocumentRepository documentRepository;
     private final DossierRepository dossierRepository;
-    public static final String DIRECTORY = System.getProperty("user.home") + "/Downloads";
+    public static final String DIRECTORY = System.getProperty("user.home") + "/Documents";
 
     public ResponseEntity<String> uploadFiles(Long id, List<MultipartFile> multipartFile) throws IOException {
         Dossier dossier = dossierRepository.getById(id);

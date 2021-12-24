@@ -45,7 +45,17 @@ public class HelperClass {
     }
 
 
-
-
+    @Data
+    public static class CounterClass {
+        private Integer LastMounth = 0;
+        private Integer ThisMounth = 0;
+        private Integer Result = 0;
+    }
+    @Data
+    public static class CounterClassYear {
+        private Integer LastYear = 0;
+        private Integer ThisYear = 0;
+        private Integer Result = 0;
+    }
 
 }
