@@ -4,6 +4,7 @@ import com.teranil.nejtrans.dao.DossierRepository;
 import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,38 @@ import java.util.*;
 @AllArgsConstructor
 public class RapportService {
     private final DossierRepository dossierRepository;
+    public static List<String> months = Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER");
+
+
+
+    public ResponseEntity<List<HelperClass.RapportHelper>> getAvg(int year){
+        List<Dossier> dossiers=dossierRepository.findAll();
+        List<HelperClass.RapportHelper> rapport=new ArrayList<>();
+        int i=0;
+        for(String month : months){
+            HelperClass.RapportHelper rapportmonth= new HelperClass.RapportHelper();
+            rapportmonth.setMonth(month);
+            for(Dossier dossier:dossiers) {
+                if (dossier.getCreatedAt().getYear() == year) {
+                    if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                        if (Objects.equals(dossier.getTypeDossier(), "Import")) {
+                            i++;
+                            rapportmonth.setCountImport(rapportmonth.getCountImport() + 1);
+                        } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                            i++;
+                            rapportmonth.setCountExport(rapportmonth.getCountExport() + 1);
+                        }
+                        rapportmonth.setCountTotal(i);
+                    }
+
+                }
+            }
+            rapport.add(rapportmonth);
+        }
+
+
+        return ResponseEntity.ok().body(rapport);
+    }
 
     public HelperClass.CounterClass getAverageFoldersMounth() {
 
@@ -86,5 +119,9 @@ public class RapportService {
         counterClass.setResult(counterClass.getThisYear()-counterClass.getLastYear());
         return counterClass;
     }
+
+
+
+
 
 }

@@ -1,13 +1,15 @@
 package com.teranil.nejtrans.web;
 
 import com.teranil.nejtrans.model.Util.HelperClass;
-import com.teranil.nejtrans.model.dto.UserDTO;
-import com.teranil.nejtrans.service.AdminService;
+
+
 import com.teranil.nejtrans.service.RapportService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
 import lombok.AllArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +41,11 @@ public class RapportController {
     @GetMapping("year/{type}")
     public HelperClass.CounterClassYear getAverageFoldersPerTypeYear(@PathVariable String type){
         return rapportService.getAverageFoldersPerTypeYear(type);
+    }
+
+    @GetMapping("/getmonths/{year}")
+    public ResponseEntity<List<HelperClass.RapportHelper>> getRapportcount(@PathVariable int year){
+        return rapportService.getAvg(year);
     }
 
 }

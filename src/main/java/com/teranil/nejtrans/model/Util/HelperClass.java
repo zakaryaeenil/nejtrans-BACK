@@ -1,7 +1,7 @@
 package com.teranil.nejtrans.model.Util;
 
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 
 
 public class HelperClass {
@@ -10,7 +10,14 @@ public class HelperClass {
     public static final Integer EnTraitement =2;
     public static final Integer Terminer =3;
 
-
+    @Data
+    @NoArgsConstructor
+    public static class RapportHelper{
+        public String month;
+        public Integer countImport=0;
+        public Integer countExport=0;
+        public Integer countTotal=0;
+    }
 
     @Data
     public static class DossierForm {

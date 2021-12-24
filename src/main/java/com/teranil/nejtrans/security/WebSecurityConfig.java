@@ -46,7 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "/dossiers/**",
             "/api/documents/**",
             "/documents/**",
-            "/api/notifications/**"
+            "/api/notifications/**",
+            "/events",
+            "/api/rapport/**"
     };
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
