@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -44,6 +45,7 @@ public class DossierService {
     private final DossierConverter dossierConverter;
     private final DocumentRepository documentRepository;
     private final NotificationRepository notificationRepository;
+
     public static final String DIRECTORY = System.getProperty("user.home") + "/Documents/uploads";
 
 
@@ -69,6 +71,7 @@ public class DossierService {
         }
         dossier.setTypeDossier(form.getTypeDossier());
         dossier.setOperation(form.getOperation());
+        dossier.setCreatedAt(LocalDateTime.now());
         dossierRepository.save(dossier);
         notification.setDescription(dossier.getUser().getUsername()+" has created folder "+ dossier.getId());
         notificationRepository.save(notification);

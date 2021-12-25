@@ -147,7 +147,12 @@ public class inittest implements CommandLineRunner {
         Dossier d = new Dossier();
         Dossier d2 = new Dossier();
         Dossier d3 = new Dossier();
-
+        String DateStart = "2021-01-29T08:00";
+        String DateEnd = "2021-05-29T10:00";
+        String DateEnd3 = "2021-03-29T10:00";
+        LocalDateTime dateS = LocalDateTime.parse(DateStart);
+        LocalDateTime dateE = LocalDateTime.parse(DateEnd);
+        LocalDateTime dateE2 = LocalDateTime.parse(DateEnd3);
         d.setAvailable(EnTraitement);
         d.setTypeDossier("Import");
         d.setEmployeeUsername("employee1");
@@ -156,6 +161,7 @@ public class inittest implements CommandLineRunner {
         d.setUser(userRepository.getById(3L));
         d.setOperation("Operation urgente");
         d.getUser().setCountDossiers(d.getUser().getCountDossiers()+1);
+        d.setCreatedAt(dateS);
 
 
         d2.setAvailable(Terminer);
@@ -165,8 +171,8 @@ public class inittest implements CommandLineRunner {
         user.setCountReservations(user.getCountReservations()+1);
         d2.setUser(userRepository.getById(3L));
         d2.setOperation("Operation normale");
-
         d2.getUser().setCountDossiers(d2.getUser().getCountDossiers()+1);
+        d2.setCreatedAt(dateE);
 
 
 
@@ -175,8 +181,7 @@ public class inittest implements CommandLineRunner {
         d3.setUser(userRepository.getById(3L));
         d3.setOperation("Travail rénumeré");
         d3.getUser().setCountDossiers(d3.getUser().getCountDossiers()+1);
-
-
+        d3.setCreatedAt(dateE2);
         dossierRepository.save(d);
         dossierRepository.save(d2);
         dossierRepository.save(d3);

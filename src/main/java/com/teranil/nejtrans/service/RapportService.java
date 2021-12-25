@@ -26,7 +26,7 @@ public class RapportService {
     public ResponseEntity<List<HelperClass.RapportHelper>> getEntreprise(int year){
         List<Dossier> dossiers=dossierRepository.findAll();
         List<HelperClass.RapportHelper> rapport=new ArrayList<>();
-        int i=0;
+
         for(String month : months){
             HelperClass.RapportHelper rapportmonth= new HelperClass.RapportHelper();
             rapportmonth.setMonth(month);
@@ -34,13 +34,13 @@ public class RapportService {
                 if (dossier.getCreatedAt().getYear() == year) {
                     if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
                         if (Objects.equals(dossier.getTypeDossier(), "Import")) {
-                            i++;
+
                             rapportmonth.setCountImport(rapportmonth.getCountImport() + 1);
                         } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
-                            i++;
+
                             rapportmonth.setCountExport(rapportmonth.getCountExport() + 1);
                         }
-                        rapportmonth.setCountTotal(i);
+                        rapportmonth.setCountTotal(rapportmonth.getCountImport()+ rapportmonth.getCountExport());
                     }
 
                 }
@@ -61,17 +61,14 @@ public class RapportService {
             rapportmonth.setMonth(month);
             for(User user:users) {
                 HelperClass.data Data=new HelperClass.data();
-
                 for(Dossier dossier:dossierRepository.findByEmployeeUsername(user.getUsername())) {
                     if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
                         if (Objects.equals(dossier.getTypeDossier(), "Import")) {
-                            i++;
                             Data.setCountImport(Data.getCountImport() + 1);
                         } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
-                            i++;
                             Data.setCountExport(Data.getCountExport() + 1);
                         }
-                        Data.setCountTotal(i);
+                        Data.setCountTotal(Data.getCountExport()+Data.getCountImport());
                     }
                 }
                 Data.setUsername(user.getUsername());
@@ -89,7 +86,6 @@ public class RapportService {
     public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getClient(){
         List<HelperClass.RapportHelperEmployee> rapport=new ArrayList<>();
         List<User> users=userRepository.findByRoles_Id(3L);
-        int i=0;
         for(String month : months){
             HelperClass.RapportHelperEmployee rapportmonth= new HelperClass.RapportHelperEmployee();
             rapportmonth.setMonth(month);
@@ -98,13 +94,11 @@ public class RapportService {
                 for(Dossier dossier:user.getDossier()) {
                     if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
                         if (Objects.equals(dossier.getTypeDossier(), "Import")) {
-                            i++;
                             Data.setCountImport(Data.getCountImport() + 1);
                         } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
-                            i++;
                             Data.setCountExport(Data.getCountExport() + 1);
                         }
-                        Data.setCountTotal(i);
+                        Data.setCountTotal(Data.getCountExport()+Data.getCountImport());
                     }
                 }
                 Data.setUsername(user.getUsername());
