@@ -14,8 +14,6 @@ import com.teranil.nejtrans.model.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +36,8 @@ public class AdminService {
     private final ToDoRepository toDoRepository;
     private final ToDoConverter toDoConverter;
     private final MailSenderService mailSenderService;
+
+    public static List<String> months = Arrays.asList("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER");
 
     public ResponseEntity<List<UserDTO>> getAll() {
         return ResponseEntity.ok().body(userConverter.entityToDto(userRepository.findAll()));
@@ -297,6 +297,97 @@ public class AdminService {
     }
 
 
+    public  ResponseEntity<List<HelperClass.ChartperYear>> getfolderschart(int year){
+        List<Dossier> dossiers=dossierRepository.findAll();
+        List<HelperClass.ChartperYear> chartperYearList=new ArrayList<>();
+        List<Dossier> result=new ArrayList<>();
+        for(Dossier dossier:dossiers){
+            if(dossier.getCreatedAt().getYear() == year){
+                result.add(dossier);
+            }
+        }
+        for(String month : months){
+            HelperClass.ChartperYear chartperYear= new HelperClass.ChartperYear();
+            chartperYear.setMonth(month);
+                for(Dossier dossier:result) {
+                    if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                        if (Objects.equals(dossier.getTypeDossier(), "Import")) {
 
+                            chartperYear.setImpo(chartperYear.getImpo() + 1);
+                        }
+                        else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                            chartperYear.setExpo(chartperYear.getExpo() + 1);
+                        }
+                    }
+                    chartperYear.setTotal(chartperYear.getImpo()+chartperYear.getExpo());
+                }
+            chartperYearList.add(chartperYear);
+            }
+        return ResponseEntity.ok().body(chartperYearList);
+    }
+
+
+
+    public  ResponseEntity<List<HelperClass.ChartperYear>> getfolderschartByUser(Long id  , int year){
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        List<Dossier> dossiers=dossierRepository.findAll();
+        List<HelperClass.ChartperYear> chartperYearList=new ArrayList<>();
+        List<Dossier> result=new ArrayList<>();
+        for(Dossier dossier:dossiers){
+            if(Objects.equals(dossier.getCreatedAt().getYear(), year) && Objects.equals(dossier.getUser().getId(), user.get().getId())){
+                result.add(dossier);
+            }
+        }
+        for(String month : months){
+            HelperClass.ChartperYear chartperYear= new HelperClass.ChartperYear();
+            chartperYear.setMonth(month);
+            for(Dossier dossier:result) {
+                if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                    if (Objects.equals(dossier.getTypeDossier(), "Import")) {
+
+                        chartperYear.setImpo(chartperYear.getImpo() + 1);
+                    }
+                    else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                        chartperYear.setExpo(chartperYear.getExpo() + 1);
+                    }
+                }
+                chartperYear.setTotal(chartperYear.getImpo()+chartperYear.getExpo());
+            }
+            chartperYearList.add(chartperYear);
+        }
+        return ResponseEntity.ok().body(chartperYearList);
+    }
+
+    public  ResponseEntity<List<HelperClass.ChartperYear>> getfolderschartByEmployee(String username , int year){
+        List<Dossier> dossiers=dossierRepository.findAll();
+        List<HelperClass.ChartperYear> chartperYearList=new ArrayList<>();
+        List<Dossier> result=new ArrayList<>();
+        for(Dossier dossier:dossiers){
+            if(Objects.equals(dossier.getCreatedAt().getYear(), year) && Objects.equals(dossier.getEmployeeUsername(),username)  && Objects.equals(dossier.getAvailable(),HelperClass.Terminer)){
+                result.add(dossier);
+            }
+        }
+        for(String month : months){
+            HelperClass.ChartperYear chartperYear= new HelperClass.ChartperYear();
+            chartperYear.setMonth(month);
+            for(Dossier dossier:result) {
+                if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                    if (Objects.equals(dossier.getTypeDossier(), "Import")) {
+
+                        chartperYear.setImpo(chartperYear.getImpo() + 1);
+                    }
+                    else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                        chartperYear.setExpo(chartperYear.getExpo() + 1);
+                    }
+                }
+                chartperYear.setTotal(chartperYear.getImpo()+chartperYear.getExpo());
+            }
+            chartperYearList.add(chartperYear);
+        }
+        return ResponseEntity.ok().body(chartperYearList);
+    }
 
 }

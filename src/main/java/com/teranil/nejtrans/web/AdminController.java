@@ -126,4 +126,23 @@ public class AdminController {
    public ResponseEntity<List<DossierDTO>> FoldersByUserByTypeAndByYear(@PathVariable Long id,@PathVariable String type,@PathVariable int year){
         return adminService.getFoldersByClientByTypeAndByYear(id,type,year);
    }
+
+
+
+    @GetMapping("/charts/{year}/all")
+    public ResponseEntity<List<HelperClass.ChartperYear>> getfolderschart(@PathVariable int year){
+        return adminService.getfolderschart(year);
+    }
+
+
+    @GetMapping("/charts/{id}/{year}/all")
+    public ResponseEntity<List<HelperClass.ChartperYear>> getfolderschartByUser(@PathVariable Long id,@PathVariable int year){
+        return adminService.getfolderschartByUser(id,year);
+    }
+
+
+    @GetMapping("/chartsemployee/{username}/{year}")
+    public ResponseEntity<List<HelperClass.ChartperYear>> getfolderschartByEmployee(@PathVariable String username,@PathVariable int year){
+        return adminService.getfolderschartByEmployee(username,year);
+    }
 }
