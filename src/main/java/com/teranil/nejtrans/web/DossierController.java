@@ -34,6 +34,11 @@ public class DossierController {
        return dossierService.createDossier(form,multipartFile);
     }
 
+    @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
+    @PutMapping("/{id}/update")
+    public ResponseEntity<String> updateDossier(@PathVariable Long id,@RequestPart("document") List<MultipartFile> multipartFile) throws IOException {
+        return dossierService.update(id,multipartFile);
+    }
 
     @ApiOperation(value = "Used by Admin to delete a folder by its id")
     @DeleteMapping("/{id}")

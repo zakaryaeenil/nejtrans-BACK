@@ -104,6 +104,40 @@ public class DossierService {
         return ResponseEntity.created(uri).body("Created successfully");
     }
 
+    public ResponseEntity<String> update(Long id ,  List<MultipartFile> multipartFile) throws IOException {
+      Dossier dossier = dossierRepository.getById(id);
+        Notification notification = new Notification();
+        notification.setDescription(dossier.getUser().getUsername()+" has updated folder "+ dossier.getId());
+        notificationRepository.save(notification);
+
+        for (MultipartFile file : multipartFile) {
+            String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+            File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
+            if(folder.mkdir()){
+                System.out.println("dossier created");
+            }
+            else{
+                System.out.println("error creating folder");
+            }
+            {
+                Path path = Paths.get(String.valueOf(folder), filename).toAbsolutePath().normalize();
+                Document document = new Document();
+                document.setDossier(dossier);
+                document.setTypeDocument(file.getContentType());
+                document.setName(filename);
+                document.setContent(file.getBytes());
+                document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
+                copy(file.getInputStream(), path, REPLACE_EXISTING);
+                documentRepository.save(document);
+
+            }
+
+        }
+
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/dossier/save").toUriString());
+        return ResponseEntity.created(uri).body("Created successfully");
+    }
+
     public ResponseEntity<String> delete(Long id) {
         Optional<Dossier> dossier = dossierRepository.findById(id);
         if (dossier.isEmpty()) {

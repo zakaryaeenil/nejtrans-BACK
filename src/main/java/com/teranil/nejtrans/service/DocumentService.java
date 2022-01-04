@@ -101,4 +101,14 @@ public class DocumentService {
         return ResponseEntity.badRequest().build();
 
     }
+
+    public ResponseEntity<String> delete(Long id) {
+        Optional<Document> document = documentRepository.findById(id);
+        if (document.isEmpty()) {
+            return ResponseEntity.badRequest().body("Dossier not found");
+        }
+        documentRepository.delete(document.get());
+        return ResponseEntity.ok().body("Dossier deleted succesfully");
+    }
+
 }

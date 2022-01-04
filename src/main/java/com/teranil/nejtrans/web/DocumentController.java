@@ -1,6 +1,7 @@
 package com.teranil.nejtrans.web;
 
 import com.teranil.nejtrans.service.DocumentService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,12 @@ public class DocumentController {
     public ResponseEntity<Resource> downloadDocumentSrv(@PathVariable Long id, HttpServletResponse response) throws Exception {
         return documentService.downloadFileFromServer(id);
     }
+
+    @ApiOperation(value = "Used by Admin to delete a folder by its id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteDocument(@PathVariable Long id) {
+        return documentService.delete(id);
+    }
+
 
 }

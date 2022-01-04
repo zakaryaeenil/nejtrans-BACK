@@ -1,5 +1,6 @@
 package com.teranil.nejtrans.dao;
 
+import com.teranil.nejtrans.model.Document;
 import com.teranil.nejtrans.model.Dossier;
 import com.teranil.nejtrans.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
