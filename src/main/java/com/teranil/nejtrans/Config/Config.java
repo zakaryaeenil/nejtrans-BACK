@@ -11,8 +11,8 @@ public class Config implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:4200",
-                        "http://localhost:8081"
-
+                        "http://localhost:8081",
+                        "**"
                 )
                 .allowedMethods(
                         "GET",
