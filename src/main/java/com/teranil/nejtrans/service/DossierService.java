@@ -46,7 +46,7 @@ public class DossierService {
     private final DocumentRepository documentRepository;
     private final NotificationRepository notificationRepository;
 
-    public static final String DIRECTORY = System.getProperty("user.home") + "/Documents/uploads";
+   // public static final String DIRECTORY = System.getProperty("user.home") + "/Documents/uploads";
 
 
     public ResponseEntity<List<DossierDTO>> getAll() {
@@ -78,25 +78,25 @@ public class DossierService {
 
         for (MultipartFile file : multipartFile) {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
-            if(folder.mkdir()){
+          //  File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
+           // if(folder.mkdir()){
                 System.out.println("dossier created");
-            }
-            else{
-                System.out.println("error creating folder");
-            }
-            {
-                Path path = Paths.get(String.valueOf(folder), filename).toAbsolutePath().normalize();
+         //   }
+           // else{
+           //     System.out.println("error creating folder");
+          //  }
+
+           //     Path path = Paths.get(String.valueOf(folder), filename).toAbsolutePath().normalize();
                 Document document = new Document();
                 document.setDossier(dossier);
                 document.setTypeDocument(file.getContentType());
                 document.setName(filename);
                 document.setContent(file.getBytes());
                 document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
-                copy(file.getInputStream(), path, REPLACE_EXISTING);
+              // copy(file.getInputStream(), path, REPLACE_EXISTING);
                 documentRepository.save(document);
 
-            }
+
 
         }
 
@@ -112,25 +112,25 @@ public class DossierService {
 
         for (MultipartFile file : multipartFile) {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
-            if(folder.mkdir()){
-                System.out.println("dossier created");
-            }
-            else{
-                System.out.println("error creating folder");
-            }
-            {
-                Path path = Paths.get(String.valueOf(folder), filename).toAbsolutePath().normalize();
+           // File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
+         //   if(folder.mkdir()){
+         //       System.out.println("dossier created");
+         //   }
+         //   else{
+         //       System.out.println("error creating folder");
+         //   }
+         //   {
+          //      Path path = Paths.get(String.valueOf(folder), filename).toAbsolutePath().normalize();
                 Document document = new Document();
                 document.setDossier(dossier);
                 document.setTypeDocument(file.getContentType());
                 document.setName(filename);
                 document.setContent(file.getBytes());
                 document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
-                copy(file.getInputStream(), path, REPLACE_EXISTING);
+            //   copy(file.getInputStream(), path, REPLACE_EXISTING);
                 documentRepository.save(document);
 
-            }
+            //}
 
         }
 
