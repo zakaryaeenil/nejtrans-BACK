@@ -14,7 +14,8 @@ public class Config implements WebMvcConfigurer {
                         "http://localhost:8081",
                         "/**",
                         "**",
-                        "*"
+                        "*",
+                        "https://zakaryaeenil.github.io"
                 )
                 .allowedMethods(
                         "GET",
