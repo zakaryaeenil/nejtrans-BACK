@@ -12,7 +12,9 @@ public class Config implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:4200",
                         "http://localhost:8081",
-                        "**"
+                        "/**",
+                        "**",
+                        "*"
                 )
                 .allowedMethods(
                         "GET",

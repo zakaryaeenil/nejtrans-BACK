@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RepositoryRestResource
 public interface ToDoRepository extends JpaRepository<ToDo, Long> {
     List<ToDo> findByType(String type);
