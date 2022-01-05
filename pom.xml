@@ -14,6 +14,8 @@
     <name>dossier</name>
     <description>dossier</description>
     <properties>
+              <sonar.organization>zakaryaeenil-12</sonar.organization>
+              <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <java.version>11</java.version>
     </properties>
     <dependencies>
