@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/dossier")
@@ -37,16 +37,30 @@ public class DossierController {
     @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
     @PutMapping("/{id}/update")
     public ResponseEntity<String> updateDossier(@PathVariable Long id,@RequestPart("document") List<MultipartFile> multipartFile) throws IOException {
-        return dossierService.update(id,multipartFile);
+        return dossierService.update(id ,multipartFile);
     }
 
+    @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
+    @PutMapping("/{id}/update/etat")
+    public ResponseEntity<String> updateDossier(@PathVariable Long id,@RequestBody String etat) throws IOException {
+        return dossierService.updateEtat(id ,etat);
+    }
+    @ApiOperation(value = "Used by Admin to create a folder for an existing user body : typedossier and username")
+    @PutMapping("/{id}/update/details")
+    public ResponseEntity<String> updateDossier(@PathVariable Long id,@RequestBody HelperClass.DossierBRD dossierBRD) throws IOException {
+        return dossierService.updateDetails(id ,dossierBRD);
+    }
     @ApiOperation(value = "Used by Admin to delete a folder by its id")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDossier(@PathVariable Long id) {
         return dossierService.delete(id);
     }
 
-
+    @ApiOperation(value = "Used by Admin to view a list of all folders")
+    @GetMapping("/{id}")
+    public ResponseEntity<DossierDTO> getDossier(@PathVariable Long id) {
+        return dossierService.getfolder(id);
+    }
 
 
 }

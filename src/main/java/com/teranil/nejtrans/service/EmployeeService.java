@@ -115,13 +115,13 @@ public class EmployeeService {
             List<User> users=userRepository.findByRoles_Id(1L);
             String body="employee"+dossier.getEmployeeUsername()+" has reserved folder "+dossier.getId()+"Type : "+dossier.getTypeDossier()+" at "+ LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm"));
-            for (User user : users) {
+          /*  for (User user : users) {
                 try {
                     mailSender.SendEmail(user.getEmail(),"Folder has been reserved!",body);
                 } catch (MailException mailException) {
                     mailException.printStackTrace();
                 }
-            }
+            }*/
             Notification notification=new Notification();
             notification.setDescription("Employee "+LoggedInUser.getUsername()+" reserved folder "+dossier.getId());
             notificationRepository.save(notification);
@@ -156,7 +156,23 @@ public class EmployeeService {
     }
 
 
-
+    public ResponseEntity<String> changeEtat(Long id,String etat){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
+        Dossier dossier = dossierRepository.getById(id);
+        List<Dossier>  dossierList= dossierRepository.findAll();
+        if (dossierList.contains(dossier) ) {
+            dossier.setEtat("");
+            dossier.setEtat(etat);
+            dossierRepository.flush();
+            Notification notification=new Notification();
+            notification.setDescription("Employee "+LoggedInUser.getUsername()+" change etat for folder "+dossier.getId());
+            notificationRepository.save(notification);
+            return ResponseEntity.ok().body("etat changed with success");
+        }
+        else
+            return ResponseEntity.badRequest().body("error during change etat");
+    }
 
 
 

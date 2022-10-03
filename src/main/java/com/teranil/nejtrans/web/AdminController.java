@@ -1,6 +1,7 @@
 package com.teranil.nejtrans.web;
 
 
+import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.ToDoDTO;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/admin")
 @Api(value = "Admin operations", description = "Operations pertaining to Admins in Nejtrans Application")
 public class AdminController {
+
 
     private final AdminService adminService;
 
@@ -144,5 +147,10 @@ public class AdminController {
     @GetMapping("/chartsemployee/{username}/{year}")
     public ResponseEntity<List<HelperClass.ChartperYear>> getfolderschartByEmployee(@PathVariable String username,@PathVariable int year){
         return adminService.getfolderschartByEmployee(username,year);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> getUserByToken(){
+        return adminService.getUserbytoken();
     }
 }

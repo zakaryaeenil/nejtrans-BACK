@@ -3,7 +3,9 @@ package com.teranil.nejtrans.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.teranil.nejtrans.model.Event;
+import com.teranil.nejtrans.model.DossierPro;
+
+import com.teranil.nejtrans.model.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,5 +41,9 @@ public class UserDTO implements Serializable {
     private Collection<RoleDTO> roles = new ArrayList<>();
     @JsonIgnore
     private Collection<EventDTO> events = new ArrayList<>();
+    @JsonIgnore
+    private Collection<DossierPro> dossierPros = new ArrayList<>();
 
+    @JsonIgnore
+    private Collection<NotificationDTO> notifications = new ArrayList<>();
 }

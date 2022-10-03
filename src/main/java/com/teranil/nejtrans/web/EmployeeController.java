@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/api/employee")
 @Api(value = "Employee operations", description = "Operations pertaining to clients in Nejtrans Application")
 public class EmployeeController {
@@ -58,4 +59,11 @@ public class EmployeeController {
     public ResponseEntity<List<DossierDTO>> getFreeFolders() {
         return employeeService.getNonReservedFolders();
     }
+
+    @ApiOperation(value = "Used by Employee to change etat for folder")
+    @PostMapping("/{id}/changeEtat")
+    public ResponseEntity<String> changeEtatDossier(@PathVariable Long id ,@RequestBody String etat) {
+        return employeeService.changeEtat(id,etat);
+    }
+
 }

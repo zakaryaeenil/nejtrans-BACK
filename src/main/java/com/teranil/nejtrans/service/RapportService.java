@@ -52,7 +52,7 @@ public class RapportService {
         return ResponseEntity.ok().body(rapport);
     }
 
-    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getEmployee(){
+    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getEmployee(int year){
         List<HelperClass.RapportHelperEmployee> rapport=new ArrayList<>();
         List<User> users=userRepository.findByRoles_Id(2L);
         int i=0;
@@ -62,14 +62,7 @@ public class RapportService {
             for(User user:users) {
                 HelperClass.data Data=new HelperClass.data();
                 for(Dossier dossier:dossierRepository.findByEmployeeUsername(user.getUsername())) {
-                    if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
-                        if (Objects.equals(dossier.getTypeDossier(), "Import")) {
-                            Data.setCountImport(Data.getCountImport() + 1);
-                        } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
-                            Data.setCountExport(Data.getCountExport() + 1);
-                        }
-                        Data.setCountTotal(Data.getCountExport()+Data.getCountImport());
-                    }
+                    CountYearMonthRapport(year, month, Data, dossier);
                 }
                 Data.setUsername(user.getUsername());
                 rapportmonth.getData().add(Data);
@@ -83,7 +76,18 @@ public class RapportService {
         return ResponseEntity.ok().body(rapport);
     }
 
-    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getClient(){
+    private void CountYearMonthRapport(int year, String month, HelperClass.data data, Dossier dossier) {
+        if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month) && Objects.equals(dossier.getCreatedAt().getYear(),year)) {
+            if (Objects.equals(dossier.getTypeDossier(), "Import")) {
+                data.setCountImport(data.getCountImport() + 1);
+            } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
+                data.setCountExport(data.getCountExport() + 1);
+            }
+            data.setCountTotal(data.getCountExport()+ data.getCountImport());
+        }
+    }
+
+    public ResponseEntity<List<HelperClass.RapportHelperEmployee>> getClient(int year){
         List<HelperClass.RapportHelperEmployee> rapport=new ArrayList<>();
         List<User> users=userRepository.findByRoles_Id(3L);
         for(String month : months){
@@ -92,14 +96,7 @@ public class RapportService {
             for(User user:users) {
                 HelperClass.data Data=new HelperClass.data();
                 for(Dossier dossier:user.getDossier()) {
-                    if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
-                        if (Objects.equals(dossier.getTypeDossier(), "Import")) {
-                            Data.setCountImport(Data.getCountImport() + 1);
-                        } else if (Objects.equals(dossier.getTypeDossier(), "Export")) {
-                            Data.setCountExport(Data.getCountExport() + 1);
-                        }
-                        Data.setCountTotal(Data.getCountExport()+Data.getCountImport());
-                    }
+                    CountYearMonthRapport(year, month, Data, dossier);
                 }
                 Data.setUsername(user.getUsername());
                 rapportmonth.getData().add(Data);
@@ -115,22 +112,32 @@ public class RapportService {
 
 
 
-    public HelperClass.CounterClass getAverageFoldersMounth() {
+    public HelperClass.CounterClass getAverageFoldersMounth(int year,int year2 , int mounth , int mounth2) {
 
         HelperClass.CounterClass counterClass = new HelperClass.CounterClass();
-        LocalDateTime lt = LocalDateTime.now();
         List<Dossier> dossiers=dossierRepository.findAll();
         for(Dossier x : dossiers) {
-            LocalDateTime date1 = x.getCreatedAt();
-            if ( lt.getMonth().getValue() == date1.getMonth().getValue()){
-               counterClass.setThisMounth(counterClass.getThisMounth()+1);
-            }
-            else if ((lt.getMonth().getValue()-1) == date1.getMonth().getValue()){
-                counterClass.setLastMounth(counterClass.getLastMounth()+1);
-           }
-        }
-        counterClass.setResult(counterClass.getThisMounth()-counterClass.getLastMounth());
+            if (mounth == 0 || mounth2 == 0){
+                if (Objects.equals(x.getCreatedAt().getYear(),year) ){
+                    counterClass.setThisYear(counterClass.getThisYear()+1);
+                }
+                if (Objects.equals(x.getCreatedAt().getYear(),year2)){
+                    counterClass.setLastYear(counterClass.getLastYear()+1);
+                }
 
+            }
+            else {
+                if (Objects.equals(x.getCreatedAt().getMonth().getValue(),mounth) && Objects.equals(x.getCreatedAt().getYear(),year) ){
+                    counterClass.setThisMounth(counterClass.getThisMounth()+1);
+                }
+                if (Objects.equals(x.getCreatedAt().getMonth().getValue(),mounth2) && Objects.equals(x.getCreatedAt().getYear(),year2)){
+                    counterClass.setLastMounth(counterClass.getLastMounth()+1);
+                }
+            }
+
+        }
+        counterClass.setResultMounth(counterClass.getThisMounth()-counterClass.getLastMounth());
+        counterClass.setResultyear(counterClass.getThisYear()-counterClass.getLastYear());
         return counterClass;
     }
 
@@ -147,7 +154,7 @@ public class RapportService {
                 counterClass.setLastMounth(counterClass.getLastMounth()+1);
             }
         }
-        counterClass.setResult(counterClass.getThisMounth()-counterClass.getLastMounth());
+        counterClass.setResultMounth(counterClass.getThisMounth()-counterClass.getLastMounth());
         return counterClass;
     }
 
@@ -187,7 +194,134 @@ public class RapportService {
     }
 
 
+//
+     public ResponseEntity<HelperClass.rapportNejtransStat> getStatEntraprise(HelperClass.betweenToDate betweenToDate){
+         HelperClass.rapportNejtransStat rapportNejtransStat = new HelperClass.rapportNejtransStat();
+        if (betweenToDate.getStartAt().isAfter(betweenToDate.getEndAt())){
+            return ResponseEntity.badRequest().body(rapportNejtransStat);
+        }
+
+         List<Dossier> dossiers=dossierRepository.findAll();
+        for (Dossier x : dossiers) {
+             if (x.getCreatedAt().isAfter(betweenToDate.getStartAt()) && x.getCreatedAt().isBefore(betweenToDate.getEndAt())){
+                switch (x.getTypeDossier()){
+                    case "Export": rapportNejtransStat.countExport++;
+                    case "Import": rapportNejtransStat.countImport++;
+                    break;
+                }
+                 switch (x.getAvailable()){
+                     case 1: rapportNejtransStat.countEnAttente++;
+                     case 2: rapportNejtransStat.countEnTraitement++;
+                     case 3: rapportNejtransStat.countTerminer++;
+                         break;
+                 }
+                 switch (x.getOperation()){
+                     case "Travail rénumeré": rapportNejtransStat.countTr++;
+                     case "Operation urgente": rapportNejtransStat.countOu++;
+                     case "Operation normale": rapportNejtransStat.countOn++;
+                         break;
+                 }
+
+                 rapportNejtransStat.countTotal ++;
+             }
+         }
+    return ResponseEntity.ok().body(rapportNejtransStat);
+     }
+//
+
+    public  ResponseEntity<List<HelperClass.ChartOperationsperYear>> getEntrepriseFoldersChartOperations(int year){
+        List<Dossier> dossiers=dossierRepository.findAll();
+        List<HelperClass.ChartOperationsperYear> chartOperationsperYears=new ArrayList<>();
+        List<Dossier> result=new ArrayList<>();
+        for(Dossier dossier:dossiers){
+            if(dossier.getCreatedAt().getYear() == year){
+                result.add(dossier);
+            }
+        }
+        for(String month : months){
+            HelperClass.ChartOperationsperYear chartperYear= new HelperClass.ChartOperationsperYear();
+            chartperYear.setMonth(month);
+            for(Dossier dossier:result) {
+                if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                    if (Objects.equals(dossier.getOperation(), "Travail rénumeré")) {
+
+                        chartperYear.setTr(chartperYear.getTr() + 1);
+                    }
+                    else if (Objects.equals(dossier.getOperation(), "Operation urgente")) {
+                        chartperYear.setOu(chartperYear.getOu() + 1);
+                    }
+                    else if (Objects.equals(dossier.getOperation(), "Operation normale")) {
+                        chartperYear.setOn(chartperYear.getOn() + 1);
+                    }
+                }
+
+            }
+            chartOperationsperYears.add(chartperYear);
+        }
+        return ResponseEntity.ok().body(chartOperationsperYears);
+    }
+
+    public  ResponseEntity<List<HelperClass.ChartDispoperYear>> getEntrepriseFoldersChartDispo(int year){
+
+        List<Dossier> dossiers=dossierRepository.findAll();
+        List<HelperClass.ChartDispoperYear> chartDispoperYears=new ArrayList<>();
+        List<Dossier> result=new ArrayList<>();
+
+        for(Dossier dossier:dossiers){
+            if(dossier.getCreatedAt().getYear() == year){
+                result.add(dossier);
+            }
+        }
+        for(String month : months){
+            HelperClass.ChartDispoperYear chartperYear= new HelperClass.ChartDispoperYear();
+            chartperYear.setMonth(month);
+            for(Dossier dossier:result) {
+                if (Objects.equals(dossier.getCreatedAt().getMonth().toString(), month)) {
+                    if (dossier.getAvailable() == 1) {
+
+                        chartperYear.setEnAttente(chartperYear.getEnAttente() + 1);
+                    }
+                    else if (dossier.getAvailable() == 2) {
+                        chartperYear.setEnTraitement(chartperYear.getEnTraitement() + 1);
+                    }
+                    else if (dossier.getAvailable() == 3) {
+                        chartperYear.setTerminer(chartperYear.getTerminer() + 1);
+                    }
+                }
+
+            }
+            chartDispoperYears.add(chartperYear);
+        }
+        return ResponseEntity.ok().body(chartDispoperYears);
+    }
 
 
+    public ResponseEntity<List<HelperClass.ByRoleChartperYearPie>> getRoleChartPie(Long role , HelperClass.betweenToDate betweenToDate){
 
+        List<User> users = userRepository.findByRoles_Id(role);
+        List<HelperClass.ByRoleChartperYearPie> byRoleChartperYearPieList = new ArrayList<>();
+        List<Dossier> dossiers = dossierRepository.findAll();
+
+        for (User user: users) {
+            HelperClass.ByRoleChartperYearPie byRoleChart = new HelperClass.ByRoleChartperYearPie();
+            byRoleChart.setUsername(user.getUsername());
+           if (role == 2){
+
+               for (Dossier x : dossiers) {
+                   if (x.getEmployeeUsername().equals(user.getUsername()) && x.getCreatedAt().isAfter(betweenToDate.getStartAt()) && x.getCreatedAt().isBefore(betweenToDate.getEndAt())){
+                       byRoleChart.setTotal(byRoleChart.getTotal()+1);
+                   }
+               }
+           }
+           else if (role == 3){
+               for (Dossier x: user.getDossier()) {
+                   if ( x.getCreatedAt().isAfter(betweenToDate.getStartAt()) && x.getCreatedAt().isBefore(betweenToDate.getEndAt())){
+                       byRoleChart.setTotal(byRoleChart.getTotal()+1);
+                   }
+               }
+           }
+           byRoleChartperYearPieList.add(byRoleChart);
+        }
+        return ResponseEntity.ok().body(byRoleChartperYearPieList);
+    }
 }

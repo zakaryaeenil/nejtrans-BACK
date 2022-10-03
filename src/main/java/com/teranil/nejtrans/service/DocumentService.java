@@ -53,13 +53,12 @@ public class DocumentService {
             Path path = get(DIRECTORY, filename).toAbsolutePath().normalize();
             Document document = new Document();
             document.setDossier(dossier);
-            document.setTypeDocument("Test ajout document");
+         //   document.setTypeDocument(filename);
             document.setName(filename);
             document.setContent(file.getBytes());
             document.getDossier().setNb_documents(document.getDossier().getNb_documents() + 1);
             copy(file.getInputStream(), path, REPLACE_EXISTING);
             documentRepository.save(document);
-
         }
         return ResponseEntity.ok().body("Test");
     }

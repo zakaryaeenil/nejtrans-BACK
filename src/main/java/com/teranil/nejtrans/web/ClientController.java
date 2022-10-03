@@ -1,8 +1,10 @@
 package com.teranil.nejtrans.web;
 
+import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.Util.HelperClass;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import com.teranil.nejtrans.model.dto.ToDoDTO;
+import com.teranil.nejtrans.model.dto.UserDTO;
 import com.teranil.nejtrans.service.ClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/client")
@@ -30,13 +32,26 @@ public class ClientController {
     public ResponseEntity<List<DossierDTO>> getUserFolders(@PathVariable String type) {
         return clientService.getUserFolders(type);
     }
-
+    @ApiOperation(value = "Used by Logged in client to get his created Folders list")
+    @GetMapping("/mee")
+    public ResponseEntity<UserDTO> getUserCurrent() {
+        return clientService.getCurrentUser();
+    }
     @ApiOperation(value = "Used by Logged in client to get his created Folders list")
     @GetMapping("/myfolders/count/{type}")
     public ResponseEntity<Integer> getUserFoldersCount(@PathVariable String type) {
         return clientService.getUserFoldersCount(type);
     }
 
+    @ApiOperation(value = "Used by Logged in client to get his created Folders list")
+    @PostMapping("/signin/update/methods")
+    public ResponseEntity<String> UpdateMethodsSignIn(@RequestBody HelperClass.SignIngMethod form) {
+        return clientService.UpdateSignInDetails(form.getUsername(),form.getNewusername() , form.getPass() , form.getCurrentPass());
+    }
 
-
+    @ApiOperation(value = "Used by Logged in client to get his created Folders list")
+    @PostMapping("/update/details")
+    public ResponseEntity<String> UpdateDetails(@RequestBody User user) {
+        return clientService.UpdateUserDetails(user);
+    }
 }

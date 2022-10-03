@@ -1,15 +1,9 @@
 package com.teranil.nejtrans.service;
 
-import com.teranil.nejtrans.dao.DocumentRepository;
-import com.teranil.nejtrans.dao.DossierRepository;
-import com.teranil.nejtrans.dao.NotificationRepository;
-import com.teranil.nejtrans.dao.UserRepository;
+import com.teranil.nejtrans.dao.*;
 import com.teranil.nejtrans.mapper.DossierConverter;
-import com.teranil.nejtrans.model.Document;
-import com.teranil.nejtrans.model.Dossier;
-import com.teranil.nejtrans.model.Notification;
+import com.teranil.nejtrans.model.*;
 import com.teranil.nejtrans.model.Util.HelperClass;
-import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.dto.DossierDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +39,17 @@ public class DossierService {
     private final DossierConverter dossierConverter;
     private final DocumentRepository documentRepository;
     private final NotificationRepository notificationRepository;
+    private final DossierProRepository dossierProRepository;
 
    // public static final String DIRECTORY = System.getProperty("user.home") + "/Documents/uploads";
 
 
     public ResponseEntity<List<DossierDTO>> getAll() {
-        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findAll()));
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.findAllNative()));
     }
-
+    public ResponseEntity<DossierDTO> getfolder(Long id) {
+        return ResponseEntity.ok().body(dossierConverter.entityToDto(dossierRepository.getById(id)));
+    }
     public ResponseEntity<String> createDossier(HelperClass.DossierForm form, List<MultipartFile> multipartFile) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User LoggedInUser = userRepository.findByUsername(auth.getPrincipal().toString());
@@ -73,7 +70,9 @@ public class DossierService {
         dossier.setOperation(form.getOperation());
         dossier.setCreatedAt(LocalDateTime.now());
         dossierRepository.save(dossier);
+        notification.setTitle("New Folder Created");
         notification.setDescription(dossier.getUser().getUsername()+" has created folder "+ dossier.getId());
+        notification.setUser_notifs(dossier.getUser());
         notificationRepository.save(notification);
 
         for (MultipartFile file : multipartFile) {
@@ -106,11 +105,12 @@ public class DossierService {
 
     public ResponseEntity<String> update(Long id ,  List<MultipartFile> multipartFile) throws IOException {
       Dossier dossier = dossierRepository.getById(id);
+
         Notification notification = new Notification();
         notification.setDescription(dossier.getUser().getUsername()+" has updated folder "+ dossier.getId());
         notificationRepository.save(notification);
 
-        for (MultipartFile file : multipartFile) {
+        for (MultipartFile file : multipartFile)  {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
            // File folder = new File(DIRECTORY +"/"+ dossier.getId().toString()+"-"+dossier.getUser().getUsername());
          //   if(folder.mkdir()){
@@ -138,6 +138,28 @@ public class DossierService {
         return ResponseEntity.created(uri).body("Created successfully");
     }
 
+    public ResponseEntity<String> updateEtat(Long id , String etat) throws IOException {
+        Dossier dossier = dossierRepository.getById(id);
+        dossier.setEtat(etat);
+        dossierRepository.flush();
+        Notification notification = new Notification();
+        notification.setDescription(dossier.getUser().getUsername()+" has updated etat of folder "+ dossier.getId());
+        notificationRepository.save(notification);
+
+     return ResponseEntity.ok().body("Etat Updated successfully");
+    }
+    public ResponseEntity<String> updateDetails(Long id , HelperClass.DossierBRD dossierBRD) throws IOException {
+        Dossier dossier = dossierRepository.getById(id);
+        dossier.setBureau(dossierBRD.getBureau());
+        dossier.setDum_numero(dossierBRD.getDum());
+        dossier.setRegime(dossierBRD.getRegime());
+        dossierRepository.flush();
+        Notification notification = new Notification();
+        notification.setDescription(dossier.getUser().getUsername()+" has updated etat of folder "+ dossier.getId());
+        notificationRepository.save(notification);
+
+        return ResponseEntity.ok().body("Details Updated successfully");
+    }
     public ResponseEntity<String> delete(Long id) {
         Optional<Dossier> dossier = dossierRepository.findById(id);
         if (dossier.isEmpty()) {

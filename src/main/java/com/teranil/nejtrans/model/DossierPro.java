@@ -3,26 +3,28 @@ package com.teranil.nejtrans.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Notification implements Serializable {
+public class DossierPro implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String description;
-    @CreationTimestamp
+    private String name;
     private LocalDateTime createdAt;
-    private Boolean read=false;
-    private String time;
+    private LocalDateTime endAt;
+
+    @OneToMany(mappedBy = "dossierPro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Dossier> dossiers = new ArrayList<>();
+
     @ManyToOne
-    private User user_notifs;
+    private User user;
 }

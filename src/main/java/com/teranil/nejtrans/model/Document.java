@@ -28,5 +28,6 @@ public class Document implements Serializable {
     @ManyToOne
     private Dossier dossier;
 
+
 }
 

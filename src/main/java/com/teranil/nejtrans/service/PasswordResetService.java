@@ -3,14 +3,19 @@ package com.teranil.nejtrans.service;
 import com.teranil.nejtrans.dao.UserRepository;
 import com.teranil.nejtrans.model.User;
 import com.teranil.nejtrans.model.Util.HelperClass;
+import com.teranil.nejtrans.model.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -21,16 +26,27 @@ public class PasswordResetService {
     private final MailSenderService mailSenderService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public ResponseEntity<String> resetPassword(String email) {
-        String code = UUID.randomUUID().toString().replaceAll("-", "").trim().substring(0,10);
-        if (!userRepository.existsByEmail(email)) {
-            return ResponseEntity.badRequest().body("Email doesnt exist!");
+    public ResponseEntity<Boolean> resetPassword(String email) {
+     //   String code = alphaNumericString(8);
+        String code = "password";
+        if (userRepository.existsByEmail(email)){
+            User user = userRepository.findByEmail(email);
+            // mailSenderService.SendEmail(user.getEmail(), "Password reset!", "Your password has been reset, your new password is : "+code);
+            user.setPassword(bCryptPasswordEncoder.encode(code));
+            userRepository.save(user);
+            return ResponseEntity.ok().body(true);
         }
-        User user = userRepository.findByEmail(email);
-        mailSenderService.SendEmail(user.getEmail(), "Password reset!", "Your password has been reset, your new password is : "+code);
-        user.setPassword(bCryptPasswordEncoder.encode(code));
-        userRepository.save(user);
-        return ResponseEntity.ok().body("Password has been reset successfully");
+        return ResponseEntity.ok().body(false);
+    }
+    public static String alphaNumericString(int len) {
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random rnd = new Random();
+
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 
    /* public ResponseEntity<String> resetPassword(HelperClass.PasswordResetForm passwordResetForm) {

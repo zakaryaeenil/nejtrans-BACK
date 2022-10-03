@@ -6,7 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 
-@CrossOrigin(origins = "https://zakaryaeenil.github.io")
+@CrossOrigin("*")
 @RepositoryRestResource
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 

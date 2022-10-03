@@ -53,6 +53,9 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private Collection<ToDo> toDos=new ArrayList<>();
 
+    @OneToMany(mappedBy = "user_notifs", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Notification> notifications = new ArrayList<>();
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private Collection<Dossier> dossier = new ArrayList<>();
@@ -61,6 +64,8 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "eventUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<Event> events = new ArrayList<>();
 
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Collection<DossierPro> dossierPros = new ArrayList<>();
 
 }

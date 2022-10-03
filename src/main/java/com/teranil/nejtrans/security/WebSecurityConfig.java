@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements U
             "/",
             "/toDos/**",
             "/dossiers/**",
+            "/dossierpro/**",
             "/api/documents/**",
             "/documents/**",
             "/api/notifications/**",

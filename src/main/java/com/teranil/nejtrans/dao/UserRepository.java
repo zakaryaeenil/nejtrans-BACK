@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
-@CrossOrigin(origins = "https://zakaryaeenil.github.io")
+@CrossOrigin("*")
 @RepositoryRestResource
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);

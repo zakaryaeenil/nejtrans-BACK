@@ -23,8 +23,14 @@ public class DossierDTO implements Serializable {
     private String employeeUsername="";
     private String etat;
     private String operation;
+
+    private String bureau;
+    private String regime;
+    private String dum_numero;
+
     private LocalDateTime createdAt;
     private Collection<DocumentDTO> documents = new ArrayList<>();
     private UserDTO user;
+    private DossierProDTO dossierProDTO;
 
 }
